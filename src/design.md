@@ -16,6 +16,13 @@ filter by tag (include & exclude); filter by name (search)
 pre-populated by me (persisted option to exclude default pool)
 "save" exports your pool as json
 can add extension files by URL, and they are persisted: URL goes into localstorage, when page is reloaded they are re-fetched and merged with pool
+randomize/shuffle?? discovery??
+
+# capture interface
+
+needs to handle image "uploads"...?
+for the sake of shareability & not dealing with image hosting, need to only concern ourselves with URLs to already-hosted images
+find ten candidate images automatically via embeddable image search api, let the user pick one?
 
 ..
 
