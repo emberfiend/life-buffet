@@ -1,20 +1,22 @@
 import React from 'react';
 import './style.css';
 
+import Path from './components/Path';
+import Pool from './components/Pool';
+
 class App extends React.Component {
-  state = { pool: [], path: [] };
+  state = { poolDelights: [], pathDelights: [] };
 
   // const user = JSON.parse(localStorage.getItem('user'));
   // localStorage.setItem('user', JSON.stringify({ name: 'Felix' }));
 
   componentDidMount() {
-    const loadedPool = JSON.parse(localStorage.getItem('pool'));
-    if (loadedPool.length == 0) {
-      console.log('a');
+    if (localStorage.getItem('pool') === null) {
+      console.log('No pool in localstorage - generating');
       this.populateNewPool();
     } else {
-      console.log('b');
-      this.setState({ pool: loadedPool });
+      console.log('Loading pool from localstorage');
+      this.setState({ poolDelights: JSON.parse(localStorage.getItem('pool')) });
     }
   }
 
@@ -23,37 +25,43 @@ class App extends React.Component {
       {
         name: 'Draw',
         description: 'Put lines on paper using lead!',
-        imageAnchor:
-          "<a id='bnjhGnVERRxnEe1by7BYcg' class='gie-single' href='http://www.gettyimages.com/detail/1249850687' target='_blank' style='color:#a7a7a7;text-decoration:none;font-weight:normal !important;border:none;display:inline-block;'>Embed from Getty Images</a><script>window.gie=window.gie||function(c){(gie.q=gie.q||[]).push(c)};gie(function(){gie.widgets.load({id:'bnjhGnVERRxnEe1by7BYcg',sig:'XApUJcMMCw7ny7ZYAmnnWno7ibWhQDDzQz5-4Jmdat4=',w:'300px',h:'300px',items:'1249850687',caption: true ,tld:'com',is360: false })});</script><script src='//embed-cdn.gettyimages.com/widgets.js' charset='utf-8' async></script>",
+        imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
         tags: ['indoors', 'outdoors', 'creative', 'cheap'],
       },
       {
         name: 'Skateboard',
         description: 'Ride your sweet chrome into the sunset!',
-        imageAnchor:
-          "<a id='bnjhGnVERRxnEe1by7BYcg' class='gie-single' href='http://www.gettyimages.com/detail/1249850687' target='_blank' style='color:#a7a7a7;text-decoration:none;font-weight:normal !important;border:none;display:inline-block;'>Embed from Getty Images</a><script>window.gie=window.gie||function(c){(gie.q=gie.q||[]).push(c)};gie(function(){gie.widgets.load({id:'bnjhGnVERRxnEe1by7BYcg',sig:'XApUJcMMCw7ny7ZYAmnnWno7ibWhQDDzQz5-4Jmdat4=',w:'300px',h:'300px',items:'1249850687',caption: true ,tld:'com',is360: false })});</script><script src='//embed-cdn.gettyimages.com/widgets.js' charset='utf-8' async></script>",
+        imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
         tags: ['outdoors', 'skill', 'risk-moderate'],
       },
     ];
     this.setState({
-      pool: newPool,
+      poolDelights: newPool,
     });
     localStorage.setItem('pool', JSON.stringify(newPool));
   };
 
   // invoking this just after changing state doesn't work - something about lifecycle
   saveToLocalStorage = () => {
-    localStorage.setItem('pool', JSON.stringify(this.state.pool));
-    localStorage.setItem('path', JSON.stringify(this.state.path));
+    localStorage.setItem('pool', JSON.stringify(this.state.poolDelights));
+    localStorage.setItem('path', JSON.stringify(this.state.pathDelights));
   };
 
   onDelightAdd = (delight) => {};
 
+  onDelightSelect = (delight) => {
+    //this.setState({ selectedVideo: video });
+    console.log('Delight clicked.');
+  };
+
   render() {
     return (
       <div>
-        <h1>Hello StackBlitz!</h1>
-        <p>Start editiaaang to see some magic happen :)</p>
+        <Path />
+        <Pool
+          delights={this.state.poolDelights}
+          onDelightSelect={this.onDelightSelect}
+        />
       </div>
     );
   }

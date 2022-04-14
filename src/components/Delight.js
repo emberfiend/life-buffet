@@ -1,7 +1,28 @@
 import React from 'react';
 
-const Delight = (name, description, tags) => {
-  return { name: name, description: description, tags: tags };
+const Delight = ({ key, onDelightSelect, delight }) => {
+  // delight: name, description, imageUrl, tags
+
+  const renderedTags = delight.tags.map((tag) => {
+    return <span>{tag} </span>;
+  });
+
+  return (
+    <div onClick={() => onDelightSelect(delight)} className="ui card">
+      <img
+        alt={delight.name}
+        className="ui image"
+        src={delight.imageUrl}
+        width="100px"
+        height="100px"
+      />
+      <div className="content">
+        <div className="header">{delight.name}</div>
+        <div>{delight.description}</div>
+        <div>Tags: {renderedTags}</div>
+      </div>
+    </div>
+  );
 };
 
 export default Delight;
