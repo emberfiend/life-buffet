@@ -8,12 +8,12 @@ const Delight = ({ key, onDelightSelect, delight }) => {
   });
 
   return (
-    <div onClick={() => onDelightSelect(delight)} className="ui card">
+    <div onClick={() => onDelightSelect(delight)} className="card">
       <img
         alt={delight.name}
         className="ui image"
         src={delight.imageUrl}
-        width="100px"
+        width="100%"
         height="100px"
       />
       <div className="content">
