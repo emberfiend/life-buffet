@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Delight = ({ key, onDelightSelect, delight }) => {
+const Delight = ({ onDelightSelect, delight }) => {
   // delight: name, description, imageUrl, tags
 
   const renderedTags = delight.tags.map((tag) => {
