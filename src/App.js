@@ -1,38 +1,24 @@
 import React from 'react';
 import './style.css';
 
-import Path from './components/Path';
-import Pool from './components/Pool';
+import DelightList from './components/DelightList';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { poolDelights: this.loadPool(), pathDelights: [] };
+    this.state = {
+      poolDelights: this.loadPool(),
+      pathDelights: this.loadPath(),
+    };
   }
 
-  /*state = {
-    poolDelights: this.loadPool(), //JSON.parse(localStorage.getItem('pool'))
-    pathDelights: [],
-  };*/
-
-  //if (this.state.poolDelights.length == 0) {
-
-  //}
-
-  // const user = JSON.parse(localStorage.getItem('user'));
-  // localStorage.setItem('user', JSON.stringify({ name: 'Felix' }));
-
   componentDidMount() {
-    //this.setState({ poolDelights: this.loadPool() });
-    //console.log("App > componentDidMount > poolDelights")
-    //console.log(this.state.poolDelights);
-    //console.log("App > componentDidMount > loadPool()")
-    //console.log(this.loadPool());
+    // ..
   }
 
   loadPool = () => {
     if (localStorage.getItem('pool') === null) {
-      console.log('No pool in localstorage - generating');
+      console.log('No pool in localstorage - generating items');
       const newPool = [
         {
           name: 'Draw',
@@ -55,26 +41,54 @@ class App extends React.Component {
     }
   };
 
+  loadPath = () => {
+    if (localStorage.getItem('path') === null) {
+      console.log('No path in localstorage - generating empty');
+      const newPath = [];
+      localStorage.setItem('path', JSON.stringify(newPath));
+      return newPath;
+    } else {
+      console.log('Loading path from localstorage');
+      return JSON.parse(localStorage.getItem('path'));
+    }
+  };
+
   // invoking this just after changing state doesn't work - something about lifecycle
   saveToLocalStorage = () => {
     localStorage.setItem('pool', JSON.stringify(this.state.poolDelights));
     localStorage.setItem('path', JSON.stringify(this.state.pathDelights));
   };
 
-  onDelightAdd = (delight) => {};
+  onAdd = (delight) => {};
 
-  onDelightSelect = (delight) => {
+  onSelect = (delight) => {
     //this.setState({ selectedVideo: video });
-    console.log('Delight clicked.');
+    console.log(`Delight ${delight.name} clicked for selection.`);
+  };
+
+  onDelete = (delight) => {
+    //this.setState({ selectedVideo: video });
+    console.log(`Delight ${delight.name} clicked for deletion.`);
   };
 
   render() {
     return (
       <div>
-        <Path />
-        <Pool
+        <DelightList
+          name="Your path"
+          delights={this.state.pathDelights}
+          onSelect={this.onSelect}
+          onAdd={this.onAdd}
+          onDelete={this.onDelete}
+          onDrag={this.onDrag}
+        />
+        <DelightList
+          name="The buffet"
           delights={this.state.poolDelights}
-          onDelightSelect={this.onDelightSelect}
+          onSelect={this.onSelect}
+          onAdd={this.onAdd}
+          onDelete={this.onDelete}
+          onDrag={this.onDrag}
         />
       </div>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Delight = ({ onDelightSelect, delight }) => {
+const Delight = ({ delight, onSelect, onDelete, onDrag }) => {
   // delight: name, description, imageUrl, tags
 
   const renderedTags = delight.tags.map((tag) => {
@@ -8,7 +8,7 @@ const Delight = ({ onDelightSelect, delight }) => {
   });
 
   return (
-    <div onClick={() => onDelightSelect(delight)} className="card">
+    <div className="card">
       <img
         alt={delight.name}
         className="ui image"
@@ -20,6 +20,8 @@ const Delight = ({ onDelightSelect, delight }) => {
         <div className="header">{delight.name}</div>
         <div>{delight.description}</div>
         <div>Tags: {renderedTags}</div>
+        <i onClick={() => onSelect(delight)} className="plus icon"></i>
+        <i onClick={() => onDelete(delight)} className="trash icon"></i>
       </div>
     </div>
   );
