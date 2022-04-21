@@ -5,40 +5,54 @@ import Path from './components/Path';
 import Pool from './components/Pool';
 
 class App extends React.Component {
-  state = { poolDelights: [], pathDelights: [] };
+  constructor(props) {
+    super(props);
+    this.state = { poolDelights: this.loadPool(), pathDelights: [] };
+  }
+
+  /*state = {
+    poolDelights: this.loadPool(), //JSON.parse(localStorage.getItem('pool'))
+    pathDelights: [],
+  };*/
+
+  //if (this.state.poolDelights.length == 0) {
+
+  //}
 
   // const user = JSON.parse(localStorage.getItem('user'));
   // localStorage.setItem('user', JSON.stringify({ name: 'Felix' }));
 
   componentDidMount() {
-    if (localStorage.getItem('pool') === null) {
-      console.log('No pool in localstorage - generating');
-      this.populateNewPool();
-    } else {
-      console.log('Loading pool from localstorage');
-      this.setState({ poolDelights: JSON.parse(localStorage.getItem('pool')) });
-    }
+    //this.setState({ poolDelights: this.loadPool() });
+    //console.log("App > componentDidMount > poolDelights")
+    //console.log(this.state.poolDelights);
+    //console.log("App > componentDidMount > loadPool()")
+    //console.log(this.loadPool());
   }
 
-  populateNewPool = () => {
-    const newPool = [
-      {
-        name: 'Draw',
-        description: 'Put lines on paper using lead!',
-        imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
-        tags: ['indoors', 'outdoors', 'creative', 'cheap'],
-      },
-      {
-        name: 'Skateboard',
-        description: 'Ride your sweet chrome into the sunset!',
-        imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
-        tags: ['outdoors', 'skill', 'risk-moderate'],
-      },
-    ];
-    this.setState({
-      poolDelights: newPool,
-    });
-    localStorage.setItem('pool', JSON.stringify(newPool));
+  loadPool = () => {
+    if (localStorage.getItem('pool') === null) {
+      console.log('No pool in localstorage - generating');
+      const newPool = [
+        {
+          name: 'Draw',
+          description: 'Put lines on paper using lead!',
+          imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
+          tags: ['indoors', 'outdoors', 'creative', 'cheap'],
+        },
+        {
+          name: 'Skateboard',
+          description: 'Ride your sweet chrome into the sunset!',
+          imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
+          tags: ['outdoors', 'skill', 'risk-moderate'],
+        },
+      ];
+      localStorage.setItem('pool', JSON.stringify(newPool));
+      return newPool;
+    } else {
+      console.log('Loading pool from localstorage');
+      return JSON.parse(localStorage.getItem('pool'));
+    }
   };
 
   // invoking this just after changing state doesn't work - something about lifecycle

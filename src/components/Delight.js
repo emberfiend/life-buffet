@@ -4,7 +4,7 @@ const Delight = ({ onDelightSelect, delight }) => {
   // delight: name, description, imageUrl, tags
 
   const renderedTags = delight.tags.map((tag) => {
-    return <span>{tag} </span>;
+    return <span key={tag}>{tag} </span>;
   });
 
   return (
