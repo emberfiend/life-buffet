@@ -39,12 +39,17 @@ const DelightList = ({ name, delights, onSelect, onAdd, onDelete, onDrag }) => {
     <React.Fragment>
       <h1>{name}</h1>
       <form className="ui form">
-        <div className="field">
-          <input
-            type="text"
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-          />
+        <div className="fields">
+          <div className="fourteen wide field">
+            <input
+              type="text"
+              value={term}
+              onChange={(e) => setTerm(e.target.value)}
+            />
+          </div>
+          <div className="two wide ui button" onClick={onAdd}>
+            Add
+          </div>
         </div>
       </form>
       <div className="ui cards">{renderedDelights}</div>

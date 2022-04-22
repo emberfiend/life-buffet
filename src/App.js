@@ -16,6 +16,18 @@ class App extends React.Component {
     // ..
   }
 
+  componentDidUpdate() {
+    // you're supposed to compare props in here? hmm
+    // is there a useEffect-like way to watch state from a class-based component, instead of doing it blindly like this?
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage = () => {
+    console.log('saveToLocalStorage');
+    localStorage.setItem('pool', JSON.stringify(this.state.poolDelights));
+    localStorage.setItem('path', JSON.stringify(this.state.pathDelights));
+  };
+
   loadPool = () => {
     if (localStorage.getItem('pool') === null) {
       console.log('No pool in localstorage - generating items');
@@ -53,42 +65,79 @@ class App extends React.Component {
     }
   };
 
-  // invoking this just after changing state doesn't work - something about lifecycle
-  saveToLocalStorage = () => {
-    localStorage.setItem('pool', JSON.stringify(this.state.poolDelights));
-    localStorage.setItem('path', JSON.stringify(this.state.pathDelights));
-  };
-
-  onAdd = (delight) => {};
-
-  onSelect = (delight) => {
+  // exclusively for adding a pool delight to the path pool
+  onPoolSelect = (delight) => {
     //this.setState({ selectedVideo: video });
     console.log(`Delight ${delight.name} clicked for selection.`);
+
+    if (!this.state.pathDelights.some((d) => d.name === delight.name)) {
+      console.log('Absent from path delights');
+
+      // can't array.push as it modifies in-place
+      this.setState((prevState) => ({
+        pathDelights: [...prevState.pathDelights, delight],
+      }));
+    }
   };
 
-  onDelete = (delight) => {
-    //this.setState({ selectedVideo: video });
-    console.log(`Delight ${delight.name} clicked for deletion.`);
+  onPathAdd = () => {
+    console.log(`Path clicked for addition.`);
+  };
+
+  onPoolAdd = () => {
+    console.log(`Pool clicked for addition - using dummy delight for now.`);
+    const newDelight = {
+      name: 'Dummy',
+      description: 'Test',
+      imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
+      tags: ['test', 'test2'],
+    };
+
+    if (!this.state.poolDelights.some((d) => d.name === newDelight.name)) {
+      console.log('Absent from pool delights');
+
+      this.setState((prevState) => ({
+        poolDelights: [...prevState.poolDelights, newDelight],
+      }));
+    }
+  };
+
+  onPathDelete = (delight) => {
+    console.log(`Path delight ${delight.name} clicked for deletion.`);
+
+    // array.filter returns a newly created array
+    this.setState((prevState) => ({
+      pathDelights: prevState.pathDelights.filter((d) => d !== delight),
+    }));
+  };
+
+  onPoolDelete = (delight) => {
+    console.log(`Pool delight ${delight.name} clicked for deletion.`);
+
+    this.setState((prevState) => ({
+      poolDelights: prevState.poolDelights.filter((d) => d !== delight),
+    }));
   };
 
   render() {
     return (
-      <div>
+      <div className="ui raised very padded text container segment">
         <DelightList
           name="Your path"
           delights={this.state.pathDelights}
-          onSelect={this.onSelect}
-          onAdd={this.onAdd}
-          onDelete={this.onDelete}
-          onDrag={this.onDrag}
+          onSelect={this.onPathSelect}
+          onAdd={this.onPathAdd}
+          onDelete={this.onPathDelete}
+          onDrag={this.onPathDrag}
         />
+        <div className="ui divider"></div>
         <DelightList
           name="The buffet"
           delights={this.state.poolDelights}
-          onSelect={this.onSelect}
-          onAdd={this.onAdd}
-          onDelete={this.onDelete}
-          onDrag={this.onDrag}
+          onSelect={this.onPoolSelect}
+          onAdd={this.onPoolAdd}
+          onDelete={this.onPoolDelete}
+          onDrag={this.onPoolDrag}
         />
       </div>
     );
