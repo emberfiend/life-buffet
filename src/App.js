@@ -9,6 +9,8 @@ class App extends React.Component {
     this.state = {
       poolDelights: this.loadPool(),
       pathDelights: this.loadPath(),
+      addModalShow: false,
+      addModalTarget: '',
     };
   }
 
@@ -19,6 +21,8 @@ class App extends React.Component {
   componentDidUpdate() {
     // you're supposed to compare props in here? hmm
     // is there a useEffect-like way to watch state from a class-based component, instead of doing it blindly like this?
+    //console.log('componentDidUpdate');
+    //console.log(this.state.poolDelights);
     this.saveToLocalStorage();
   }
 
@@ -81,7 +85,22 @@ class App extends React.Component {
   };
 
   onPathAdd = () => {
-    console.log(`Path clicked for addition.`);
+    console.log(`Path clicked for addition - using dummy delight for now.`);
+
+    const newDelight = {
+      name: 'Dummy',
+      description: 'Test',
+      imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
+      tags: ['test', 'test2'],
+    };
+
+    if (!this.state.pathDelights.some((d) => d.name === newDelight.name)) {
+      console.log('Absent from pool delights');
+
+      this.setState((prevState) => ({
+        pathDelights: [...prevState.pathDelights, newDelight],
+      }));
+    }
   };
 
   onPoolAdd = () => {
@@ -122,17 +141,27 @@ class App extends React.Component {
   render() {
     return (
       <div className="ui raised very padded text container segment">
+        {this.state.addModalShow ? (
+          <AddDelightModal target={this.state.addModalTarget} />
+        ) : (
+          ''
+        )}
+
         <DelightList
           name="Your path"
+          isPath={true}
           delights={this.state.pathDelights}
           onSelect={this.onPathSelect}
           onAdd={this.onPathAdd}
           onDelete={this.onPathDelete}
           onDrag={this.onPathDrag}
         />
+
         <div className="ui divider"></div>
+
         <DelightList
           name="The buffet"
+          isPath={false}
           delights={this.state.poolDelights}
           onSelect={this.onPoolSelect}
           onAdd={this.onPoolAdd}

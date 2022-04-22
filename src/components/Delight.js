@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Delight = ({ delight, onSelect, onDelete, onDrag }) => {
+const Delight = ({ delight, isPath, onSelect, onDelete, onDrag }) => {
   // delight: name, description, imageUrl, tags
 
   const renderedTags = delight.tags.map((tag) => {
@@ -17,11 +17,22 @@ const Delight = ({ delight, onSelect, onDelete, onDrag }) => {
         height="100px"
       />
       <div className="content">
-        <div className="header">{delight.name}</div>
+        <div className="ui grid">
+          <div className="eleven wide column">
+            <div className="header">{delight.name}</div>
+          </div>
+          <div className="two wide column">
+            <i
+              onClick={() => onSelect(delight)}
+              className={!isPath ? `plus icon` : ''}
+            ></i>
+          </div>
+          <div className="two wide column">
+            <i onClick={() => onDelete(delight)} className="trash icon"></i>
+          </div>
+        </div>
         <div>{delight.description}</div>
         <div>Tags: {renderedTags}</div>
-        <i onClick={() => onSelect(delight)} className="plus icon"></i>
-        <i onClick={() => onDelete(delight)} className="trash icon"></i>
       </div>
     </div>
   );
