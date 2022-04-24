@@ -28,3 +28,10 @@ find ten candidate images automatically via embeddable image search api, let the
 
 a delight has a name, description, and list of categorizational tags
 all persistence in localstorage for now
+
+search term randomizer
+hide own path
+personal notes on each item (within the path)
+personal categorization - only via tag edits??
+import pack list - manage packs? retain via tag identity probably
+use general-purpose two-pane manager, where selection just adds the top-searched tag to the clicked item
