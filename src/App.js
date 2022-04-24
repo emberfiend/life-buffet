@@ -148,7 +148,7 @@ class App extends React.Component {
         )}
 
         <DelightList
-          name="Your path"
+          name="Your plate"
           isPath={true}
           delights={this.state.pathDelights}
           onSelect={this.onPathSelect}
