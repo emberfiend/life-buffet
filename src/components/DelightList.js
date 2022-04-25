@@ -3,14 +3,17 @@ import Delight from './Delight';
 
 const DelightList = ({
   name,
-  isPath,
+  term,
+  onTermChange,
+  targetTag,
   delights,
   onSelect,
   onAdd,
+  onUntag,
   onDelete,
   onDrag,
 }) => {
-  const [term, setTerm] = useState('');
+  //const [term, setTerm] = useState(defaultFilter);
   const [filteredDelights, setFilteredDelights] = useState([]);
 
   useEffect(() => {
@@ -31,13 +34,19 @@ const DelightList = ({
     );
   }, [term, delights]); // needs to watch delights too, to refilter when it changes
 
+  const onUntagHelper = (delight) => {
+    onUntag(delight, term);
+  };
+
   const renderedDelights = filteredDelights.map((delight) => {
     return (
       <Delight
         key={delight.name}
         delight={delight}
-        isPath={isPath}
+        ownTag={term}
+        targetTag={targetTag}
         onSelect={onSelect}
+        onUntag={onUntagHelper}
         onDelete={onDelete}
         onDrag={onDrag}
       />
@@ -53,10 +62,10 @@ const DelightList = ({
             <input
               type="text"
               value={term}
-              onChange={(e) => setTerm(e.target.value)}
+              onChange={(e) => onTermChange(e.target.value)}
             />
           </div>
-          <div className="two wide ui button" onClick={onAdd}>
+          <div className="two wide ui button" onClick={() => onAdd(term)}>
             Add
           </div>
         </div>

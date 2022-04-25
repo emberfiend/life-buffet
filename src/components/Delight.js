@@ -1,11 +1,27 @@
 import React from 'react';
 
-const Delight = ({ delight, isPath, onSelect, onDelete, onDrag }) => {
+const Delight = ({
+  delight,
+  ownTag,
+  targetTag,
+  onSelect,
+  onUntag,
+  onDelete,
+  onDrag,
+}) => {
   // delight: name, description, imageUrl, tags
 
   const renderedTags = delight.tags.map((tag) => {
     return <span key={tag}>{tag} </span>;
   });
+
+  const hasTargetTag = delight.tags.reduce((state, next) => {
+    return state || next.includes(targetTag);
+  }, false);
+
+  const isNotEmpty = ownTag.length > 0 ? true : false;
+  const isRemovable =
+    isNotEmpty && delight.tags.filter((t) => t == ownTag).length > 0;
 
   return (
     <div className="card">
@@ -18,13 +34,19 @@ const Delight = ({ delight, isPath, onSelect, onDelete, onDrag }) => {
       />
       <div className="content">
         <div className="ui grid">
-          <div className="eleven wide column">
+          <div className="nine wide column">
             <div className="header">{delight.name}</div>
           </div>
           <div className="two wide column">
             <i
               onClick={() => onSelect(delight)}
-              className={!isPath ? `plus icon` : ''}
+              className={!hasTargetTag ? `plus icon` : ''}
+            ></i>
+          </div>
+          <div className="two wide column">
+            <i
+              onClick={() => onUntag(delight)}
+              className={isRemovable ? `minus icon` : ``}
             ></i>
           </div>
           <div className="two wide column">
