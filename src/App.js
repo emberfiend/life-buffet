@@ -2,14 +2,15 @@ import React from 'react';
 import './style.css';
 
 import DelightList from './components/DelightList';
+import AddDelightModal from './components/AddDelightModal';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       poolDelights: this.loadPool(),
-      addModalShow: false,
-      addModalTarget: '',
+      editModalShow: false,
+      editModalTarget: {},
       termOne: 'to-taste',
       termTwo: '',
     };
@@ -98,8 +99,23 @@ class App extends React.Component {
     }
   };
 
-  onAdd = (term) => {
-    //TODO: this should auto-add the filter term as a tag, if present
+  onEditStart = (term, delight) => {
+    // this invokes the edit modal, pre-filling fields if we're editing an existing one
+    if (delight != null) {
+      this.setState({ editModalTarget: delight });
+    } else {
+      this.setState({ editModalTarget: {} });
+    }
+    this.setState({ editModalShow: true });
+  };
+
+  onEditEnd = () => {
+    // dismiss the modal and call the function which actually adds it
+    this.setState({ editModalShow: false });
+  };
+
+  onAdd = (term, delight) => {
+    // this should auto-add the filter term as a tag, if present
 
     console.log(
       `Item clicked for addition from section with term ${term} (using dummy delight for now).`
@@ -186,8 +202,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="ui raised very padded text container segment">
-        {this.state.addModalShow ? (
-          <AddDelightModal target={this.state.addModalTarget} />
+        {this.state.editModalShow ? (
+          <AddDelightModal
+            editModalTarget={this.state.editModalTarget}
+            onEditEnd={this.onEditEnd}
+          />
         ) : (
           ''
         )}
@@ -199,7 +218,7 @@ class App extends React.Component {
           targetTag={this.state.termTwo}
           delights={this.state.poolDelights}
           onSelect={this.onSelect}
-          onAdd={this.onAdd}
+          onEditStart={this.onEditStart}
           onUntag={this.onUntag}
           onDelete={this.onDelete}
           onDrag={this.onPathDrag}
@@ -214,7 +233,7 @@ class App extends React.Component {
           targetTag={this.state.termOne}
           delights={this.state.poolDelights}
           onSelect={this.onSelect}
-          onAdd={this.onAdd}
+          onEditStart={this.onEditStart}
           onUntag={this.onUntag}
           onDelete={this.onDelete}
           onDrag={this.onPoolDrag}

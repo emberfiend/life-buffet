@@ -8,7 +8,7 @@ const DelightList = ({
   targetTag,
   delights,
   onSelect,
-  onAdd,
+  onEditStart,
   onUntag,
   onDelete,
   onDrag,
@@ -46,6 +46,7 @@ const DelightList = ({
         ownTag={term}
         targetTag={targetTag}
         onSelect={onSelect}
+        onEditStart={onEditStart}
         onUntag={onUntagHelper}
         onDelete={onDelete}
         onDrag={onDrag}
@@ -65,7 +66,10 @@ const DelightList = ({
               onChange={(e) => onTermChange(e.target.value)}
             />
           </div>
-          <div className="two wide ui button" onClick={() => onAdd(term)}>
+          <div
+            className="two wide ui button"
+            onClick={() => onEditStart(term, null)}
+          >
             Add
           </div>
         </div>

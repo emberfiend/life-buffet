@@ -5,6 +5,7 @@ const Delight = ({
   ownTag,
   targetTag,
   onSelect,
+  onEditStart,
   onUntag,
   onDelete,
   onDrag,
@@ -18,6 +19,10 @@ const Delight = ({
   const hasTargetTag = delight.tags.reduce((state, next) => {
     return state || next.includes(targetTag);
   }, false);
+
+  /*const hasOwnTag = delight.tags.reduce((state, next) => {
+    return state || next.includes(ownTag);
+  }, false);*/
 
   const isNotEmpty = ownTag.length > 0 ? true : false;
   const isRemovable =
@@ -37,19 +42,25 @@ const Delight = ({
           <div className="nine wide column">
             <div className="header">{delight.name}</div>
           </div>
-          <div className="two wide column">
+          <div className="one wide column">
+            <i
+              onClick={() => onEditStart(ownTag, delight)}
+              className="edit icon"
+            ></i>
+          </div>
+          <div className="one wide column">
             <i
               onClick={() => onSelect(delight)}
               className={!hasTargetTag ? `plus icon` : ''}
             ></i>
           </div>
-          <div className="two wide column">
+          <div className="one wide column">
             <i
               onClick={() => onUntag(delight)}
               className={isRemovable ? `minus icon` : ``}
             ></i>
           </div>
-          <div className="two wide column">
+          <div className="one wide column">
             <i onClick={() => onDelete(delight)} className="trash icon"></i>
           </div>
         </div>
