@@ -2,7 +2,7 @@ import React from 'react';
 import './style.css';
 
 import DelightList from './components/DelightList';
-import AddDelightModal from './components/AddDelightModal';
+import EditDelightModal from './components/EditDelightModal';
 
 class App extends React.Component {
   constructor(props) {
@@ -201,43 +201,44 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="ui raised very padded text container segment">
+      <div>
         {this.state.editModalShow ? (
-          <AddDelightModal
+          <EditDelightModal
             editModalTarget={this.state.editModalTarget}
             onEditEnd={this.onEditEnd}
           />
         ) : (
           ''
         )}
+        <div className="ui raised very padded text container segment">
+          <DelightList
+            name="To taste"
+            term={this.state.termOne}
+            onTermChange={this.onTermChangeOne}
+            targetTag={this.state.termTwo}
+            delights={this.state.poolDelights}
+            onSelect={this.onSelect}
+            onEditStart={this.onEditStart}
+            onUntag={this.onUntag}
+            onDelete={this.onDelete}
+            onDrag={this.onPathDrag}
+          />
 
-        <DelightList
-          name="To taste"
-          term={this.state.termOne}
-          onTermChange={this.onTermChangeOne}
-          targetTag={this.state.termTwo}
-          delights={this.state.poolDelights}
-          onSelect={this.onSelect}
-          onEditStart={this.onEditStart}
-          onUntag={this.onUntag}
-          onDelete={this.onDelete}
-          onDrag={this.onPathDrag}
-        />
+          <div className="ui divider"></div>
 
-        <div className="ui divider"></div>
-
-        <DelightList
-          name="The buffet"
-          term={this.state.termTwo}
-          onTermChange={this.onTermChangeTwo}
-          targetTag={this.state.termOne}
-          delights={this.state.poolDelights}
-          onSelect={this.onSelect}
-          onEditStart={this.onEditStart}
-          onUntag={this.onUntag}
-          onDelete={this.onDelete}
-          onDrag={this.onPoolDrag}
-        />
+          <DelightList
+            name="The buffet"
+            term={this.state.termTwo}
+            onTermChange={this.onTermChangeTwo}
+            targetTag={this.state.termOne}
+            delights={this.state.poolDelights}
+            onSelect={this.onSelect}
+            onEditStart={this.onEditStart}
+            onUntag={this.onUntag}
+            onDelete={this.onDelete}
+            onDrag={this.onPoolDrag}
+          />
+        </div>
       </div>
     );
   }

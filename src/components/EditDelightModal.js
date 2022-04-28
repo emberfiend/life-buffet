@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AddDelightModal = ({ editModalTarget, onEditEnd }) => {
+const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
   // editModalTarget MAY already be a delight; prefill fields if it is
   // retain the edit-in-progress in the editModalTarget object, can save it to localStorage even
   // but when it comes to actually committing it to the main pool, be careful with name collisions
@@ -84,4 +84,4 @@ const AddDelightModal = ({ editModalTarget, onEditEnd }) => {
   );
 };
 
-export default AddDelightModal;
+export default EditDelightModal;
