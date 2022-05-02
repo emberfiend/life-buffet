@@ -10,7 +10,9 @@ class App extends React.Component {
     this.state = {
       poolDelights: this.loadPool(),
       editModalShow: false,
-      editModalTarget: {},
+      editModalNew: false,
+      editModalTarget: this.makeEmptyDelight(),
+      editModalIndex: 0,
       termOne: 'to-taste',
       termTwo: '',
     };
@@ -59,6 +61,15 @@ class App extends React.Component {
     }
   };
 
+  makeEmptyDelight() {
+    return {
+      name: '',
+      description: '',
+      imageUrl: '',
+      tags: [''],
+    };
+  }
+
   onSelect = (delight) => {
     console.log(`Delight ${delight.name} clicked for selection.`);
 
@@ -101,16 +112,47 @@ class App extends React.Component {
 
   onEditStart = (term, delight) => {
     // this invokes the edit modal, pre-filling fields if we're editing an existing one
+    // editModalNew, editModalIndex
+
     if (delight != null) {
-      this.setState({ editModalTarget: delight });
+      // should always find something - but do handle failure case for sanity
+      const targetDelightIndex = this.state.poolDelights.findIndex(
+        (d) => d.name == delight.name
+      );
+      console.log(`index of current delight is ${targetDelightIndex}`);
+      this.setState({
+        editModalNew: true,
+        editModalTarget: delight,
+        editModalIndex: targetDelightIndex,
+      });
     } else {
-      this.setState({ editModalTarget: {} });
+      this.setState({
+        editModalNew: false,
+        editModalTarget: {},
+        editModalIndex: 0,
+      });
     }
     this.setState({ editModalShow: true });
   };
 
-  onEditEnd = () => {
+  onEditEnd = (save) => {
     // dismiss the modal and call the function which actually adds it
+    // untested!
+
+    if (save) {
+      // poolDelights[editModalIndex] = editModalTarget
+
+      function spliceArray(oldDelights, newDelight) {
+        var newArray = [...oldDelights];
+        newArray.splice(this.state.editModalIndex, 1, newDelight);
+        return newArray;
+      }
+
+      this.setState((prevState) => ({
+        poolDelights: spliceArray(prevState.poolDelights, editModalTarget),
+      }));
+    }
+
     this.setState({ editModalShow: false });
   };
 

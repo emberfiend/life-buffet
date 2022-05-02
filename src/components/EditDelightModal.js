@@ -5,20 +5,21 @@ const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
   // retain the edit-in-progress in the editModalTarget object, can save it to localStorage even
   // but when it comes to actually committing it to the main pool, be careful with name collisions
 
-  const editMode = editModalTarget.hasOwnProperty('name');
+  const editMode = editModalTarget.name.length > 0;
 
-  var renderedTags;
-  if (editMode) { 
-    renderedTags = editModalTarget.tags.map((t) => {
-      return (
-        <div class="item">
-          <div class="content">
-            {t}
-          </div>
+  var renderedTags = editModalTarget.tags.map((t) => {
+    return (
+      <div class="item">
+        <div class="content">
+          {t}
         </div>
-      );
-    });
-  }
+      </div>
+    );
+  });
+
+  onNameChange = (e) => {
+    this.setState({ term: e.target.value });
+  };  
 
   return (
     <div className="ui active modal">
@@ -33,8 +34,8 @@ const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
               type="text"
               name="name"
               placeholder="Name your delight. Must be unique!"
-              defaultValue={editMode ? editModalTarget.name : ''}
-              onChange={}
+              value={editModalTarget.name}
+              onChange={this.onNameChange}
             />
           </div>
           <div className="field">
@@ -53,7 +54,7 @@ const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
               type="text"
               name="imageurl"
               placeholder="Give an image URL. No hotlinking! Only files you host."
-              defaultValue={editMode ? editModalTarget.imageURL : ''}
+              defaultValue={editMode ? editModalTarget.imageUrl : ''}
               onChange={}
             />
           </div>
@@ -73,10 +74,10 @@ const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
         </div>
       </form>
       <div class="actions">
-        <div class="ui approve button" onClick={() => onEditEnd()}>
+        <div class="ui approve button" onClick={() => onEditEnd(true)}>
           Add
         </div>
-        <div class="ui cancel button" onClick={() => onEditEnd()}>
+        <div class="ui cancel button" onClick={() => onEditEnd(false)}>
           Cancel
         </div>
       </div>
