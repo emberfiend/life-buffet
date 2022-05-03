@@ -10,9 +10,8 @@ class App extends React.Component {
     this.state = {
       poolDelights: this.loadPool(),
       editModalShow: false,
-      editModalNew: false,
       editModalTarget: this.makeEmptyDelight(),
-      editModalIndex: 0,
+      editModalIndex: -1,
       termOne: 'to-taste',
       termTwo: '',
     };
@@ -114,22 +113,24 @@ class App extends React.Component {
     // this invokes the edit modal, pre-filling fields if we're editing an existing one
     // editModalNew, editModalIndex
 
-    if (delight != null) {
-      // should always find something - but do handle failure case for sanity
-      const targetDelightIndex = this.state.poolDelights.findIndex(
-        (d) => d.name == delight.name
-      );
+    console.log(delight);
+
+    //check if delight is null!!!
+
+    const targetDelightIndex = this.state.poolDelights.findIndex(
+      (d) => d.name == delight.name
+    );
+
+    if (targetDelightIndex > -1) {
       console.log(`index of current delight is ${targetDelightIndex}`);
       this.setState({
-        editModalNew: true,
         editModalTarget: delight,
         editModalIndex: targetDelightIndex,
       });
     } else {
       this.setState({
-        editModalNew: false,
-        editModalTarget: {},
-        editModalIndex: 0,
+        editModalTarget: this.makeEmptyDelight(),
+        editModalIndex: -1,
       });
     }
     this.setState({ editModalShow: true });
@@ -139,12 +140,24 @@ class App extends React.Component {
     // dismiss the modal and call the function which actually adds it
     // untested!
 
+    console.log(`onEditEnd with save state ${save}`);
+
     if (save) {
       // poolDelights[editModalIndex] = editModalTarget
 
       function spliceArray(oldDelights, newDelight) {
         var newArray = [...oldDelights];
-        newArray.splice(this.state.editModalIndex, 1, newDelight);
+        if (editModalIndex > -1) {
+          console.log(`Splicing into pool delights at ${editModalIndex}`);
+          newArray.splice(this.state.editModalIndex, 1, newDelight);
+        } else {
+          if (
+            !this.state.poolDelights.some((d) => d.name === newDelight.name)
+          ) {
+            console.log('Absent from pool delights, appending to array');
+            newArray.push(newDelight);
+          }
+        }
         return newArray;
       }
 
@@ -156,7 +169,21 @@ class App extends React.Component {
     this.setState({ editModalShow: false });
   };
 
-  onAdd = (term, delight) => {
+  onNameChange = (name) => {
+    console.log('onNameChange');
+
+    function updateDelightName(d, newName) {
+      var newDelight = d;
+      newDelight.name = newName;
+      return newDelight;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: updateDelightName(prevState.editModalTarget, name),
+    }));
+  };
+
+  /*onAdd = (term, delight) => {
     // this should auto-add the filter term as a tag, if present
 
     console.log(
@@ -186,7 +213,7 @@ class App extends React.Component {
         poolDelights: [...prevState.poolDelights, newDelight],
       }));
     }
-  };
+  };*/
 
   onUntag = (delight, term) => {
     console.log(`Delight ${delight.name} clicked for ${term} tag removal.`);
@@ -247,6 +274,7 @@ class App extends React.Component {
         {this.state.editModalShow ? (
           <EditDelightModal
             editModalTarget={this.state.editModalTarget}
+            onNameChange={this.onNameChange}
             onEditEnd={this.onEditEnd}
           />
         ) : (

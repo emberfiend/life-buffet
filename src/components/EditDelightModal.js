@@ -1,10 +1,13 @@
 import React from 'react';
 
-const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
+const EditDelightModal = ({ editModalTarget, onNameChange, onEditEnd }) => {
   // editModalTarget MAY already be a delight; prefill fields if it is
   // retain the edit-in-progress in the editModalTarget object, can save it to localStorage even
   // but when it comes to actually committing it to the main pool, be careful with name collisions
 
+  // editModalTarget.hasOwnProperty('name')
+  // should sanity check this
+  console.log(editModalTarget);
   const editMode = editModalTarget.name.length > 0;
 
   var renderedTags = editModalTarget.tags.map((t) => {
@@ -16,10 +19,6 @@ const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
       </div>
     );
   });
-
-  onNameChange = (e) => {
-    this.setState({ term: e.target.value });
-  };  
 
   return (
     <div className="ui active modal">
@@ -35,7 +34,7 @@ const EditDelightModal = ({ editModalTarget, onEditEnd }) => {
               name="name"
               placeholder="Name your delight. Must be unique!"
               value={editModalTarget.name}
-              onChange={this.onNameChange}
+              onChange={(e) => onNameChange(e.target.value)}
             />
           </div>
           <div className="field">
