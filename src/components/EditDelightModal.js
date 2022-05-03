@@ -68,13 +68,13 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onEditEnd }) => {
             />
           </div>
           <div class="ui mini horizontal divided list">
-            {editMode ? renderedTags : ''}
+            {renderedTags}
           </div>
         </div>
       </form>
       <div class="actions">
         <div class="ui approve button" onClick={() => onEditEnd(true)}>
-          Add
+          Save
         </div>
         <div class="ui cancel button" onClick={() => onEditEnd(false)}>
           Cancel

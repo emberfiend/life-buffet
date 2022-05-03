@@ -10,7 +10,7 @@ class App extends React.Component {
     this.state = {
       poolDelights: this.loadPool(),
       editModalShow: false,
-      editModalTarget: this.makeEmptyDelight(),
+      editModalTarget: this.makeFreshDelight(),
       editModalIndex: -1,
       termOne: 'to-taste',
       termTwo: '',
@@ -60,12 +60,20 @@ class App extends React.Component {
     }
   };
 
-  makeEmptyDelight() {
+  // see https://en.wikipedia.org/wiki/JSDoc
+
+  /**
+   * Creates a fresh delight.
+   *
+   * @param {string} term Optionally defines a term to be added to the tag list upon creation.
+   * @return {Object} The freshly-made Delight.
+   */
+  makeFreshDelight(term) {
     return {
       name: '',
       description: '',
       imageUrl: '',
-      tags: [''],
+      tags: [term == undefined ? '' : term],
     };
   }
 
@@ -113,23 +121,23 @@ class App extends React.Component {
     // this invokes the edit modal, pre-filling fields if we're editing an existing one
     // editModalNew, editModalIndex
 
-    console.log(delight);
+    console.log('onEditStart');
 
-    //check if delight is null!!!
+    if (delight != null) {
+      const targetDelightIndex = this.state.poolDelights.findIndex(
+        (d) => d.name == delight.name
+      );
 
-    const targetDelightIndex = this.state.poolDelights.findIndex(
-      (d) => d.name == delight.name
-    );
+      console.log(`Editing existing delight at index ${targetDelightIndex}`);
 
-    if (targetDelightIndex > -1) {
-      console.log(`index of current delight is ${targetDelightIndex}`);
       this.setState({
-        editModalTarget: delight,
+        editModalTarget: { ...delight }, // need to edit a copy to allow cancelling
         editModalIndex: targetDelightIndex,
       });
     } else {
+      console.log('Editing new delight');
       this.setState({
-        editModalTarget: this.makeEmptyDelight(),
+        editModalTarget: this.makeFreshDelight(term),
         editModalIndex: -1,
       });
     }
@@ -145,15 +153,18 @@ class App extends React.Component {
     if (save) {
       // poolDelights[editModalIndex] = editModalTarget
 
-      function spliceArray(oldDelights, newDelight) {
+      // careful with functions like this: can't refer to (normal) state because of where it's being used
+      function spliceIntoOrAppendToArray(oldDelights, newDelight, index) {
+        //console.log(1);
         var newArray = [...oldDelights];
-        if (editModalIndex > -1) {
-          console.log(`Splicing into pool delights at ${editModalIndex}`);
-          newArray.splice(this.state.editModalIndex, 1, newDelight);
+        //console.log(`index is ${index}`);
+        if (index > -1) {
+          //console.log(3);
+          console.log(`Splicing into pool delights at ${index}`);
+          newArray.splice(index, 1, newDelight);
         } else {
-          if (
-            !this.state.poolDelights.some((d) => d.name === newDelight.name)
-          ) {
+          //console.log(4);
+          if (!oldDelights.some((d) => d.name === newDelight.name)) {
             console.log('Absent from pool delights, appending to array');
             newArray.push(newDelight);
           }
@@ -162,7 +173,11 @@ class App extends React.Component {
       }
 
       this.setState((prevState) => ({
-        poolDelights: spliceArray(prevState.poolDelights, editModalTarget),
+        poolDelights: spliceIntoOrAppendToArray(
+          prevState.poolDelights,
+          prevState.editModalTarget,
+          prevState.editModalIndex
+        ),
       }));
     }
 
