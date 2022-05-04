@@ -1,3 +1,9 @@
+<div class="ui mini horizontal divided list">
+  {renderedTags}
+</div>
+
+
+
 // previous onPoolSelect design involving two separate pools
 if (!this.state.pathDelights.some((d) => d.name === delight.name)) {
   console.log('Absent from path delights');

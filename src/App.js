@@ -146,24 +146,17 @@ class App extends React.Component {
 
   onEditEnd = (save) => {
     // dismiss the modal and call the function which actually adds it
-    // untested!
 
     console.log(`onEditEnd with save state ${save}`);
 
     if (save) {
-      // poolDelights[editModalIndex] = editModalTarget
-
-      // careful with functions like this: can't refer to (normal) state because of where it's being used
+      // careful here: can't refer to (normal) state because of where it's being used
       function spliceIntoOrAppendToArray(oldDelights, newDelight, index) {
-        //console.log(1);
         var newArray = [...oldDelights];
-        //console.log(`index is ${index}`);
         if (index > -1) {
-          //console.log(3);
           console.log(`Splicing into pool delights at ${index}`);
           newArray.splice(index, 1, newDelight);
         } else {
-          //console.log(4);
           if (!oldDelights.some((d) => d.name === newDelight.name)) {
             console.log('Absent from pool delights, appending to array');
             newArray.push(newDelight);
@@ -184,17 +177,49 @@ class App extends React.Component {
     this.setState({ editModalShow: false });
   };
 
+  // TODO: refactor these - there must be a way to at least inline the update function
   onNameChange = (name) => {
     console.log('onNameChange');
 
     function updateDelightName(d, newName) {
-      var newDelight = d;
-      newDelight.name = newName;
-      return newDelight;
+      d.name = newName;
+      return d;
     }
 
     this.setState((prevState) => ({
       editModalTarget: updateDelightName(prevState.editModalTarget, name),
+    }));
+  };
+
+  onDescriptionChange = (description) => {
+    console.log('onDescriptionChange');
+
+    function updateDelightDescription(d, newDescription) {
+      d.description = newDescription;
+      return d;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: updateDelightDescription(
+        prevState.editModalTarget,
+        description
+      ),
+    }));
+  };
+
+  onImageUrlChange = (imageUrl) => {
+    console.log('onImageUrlChange');
+
+    function updateImageUrlDescription(d, newImageUrl) {
+      d.imageUrl = newImageUrl;
+      return d;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: updateImageUrlDescription(
+        prevState.editModalTarget,
+        imageUrl
+      ),
     }));
   };
 
@@ -290,6 +315,8 @@ class App extends React.Component {
           <EditDelightModal
             editModalTarget={this.state.editModalTarget}
             onNameChange={this.onNameChange}
+            onDescriptionChange={this.onDescriptionChange}
+            onImageUrlChange={this.onImageUrlChange}
             onEditEnd={this.onEditEnd}
           />
         ) : (

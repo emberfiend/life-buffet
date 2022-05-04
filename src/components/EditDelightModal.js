@@ -1,6 +1,6 @@
 import React from 'react';
 
-const EditDelightModal = ({ editModalTarget, onNameChange, onEditEnd }) => {
+const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, onImageUrlChange, onEditEnd }) => {
   // editModalTarget MAY already be a delight; prefill fields if it is
   // retain the edit-in-progress in the editModalTarget object, can save it to localStorage even
   // but when it comes to actually committing it to the main pool, be careful with name collisions
@@ -43,8 +43,8 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onEditEnd }) => {
               type="text"
               name="description"
               placeholder="Describe your delight."
-              defaultValue={editMode ? editModalTarget.description : ''}
-              onChange={}
+              defaultValue={editModalTarget.description}
+              onChange={(e) => onDescriptionChange(e.target.value)}
             />
           </div>
           <div className="field">
@@ -53,11 +53,11 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onEditEnd }) => {
               type="text"
               name="imageurl"
               placeholder="Give an image URL. No hotlinking! Only files you host."
-              defaultValue={editMode ? editModalTarget.imageUrl : ''}
-              onChange={}
+              defaultValue={editModalTarget.imageUrl}
+              onChange={(e) => onImageUrlChange(e.target.value)}
             />
           </div>
-          <div className="field">
+          <div className="eight wide field">
             <label>Tags</label>
             <input
               type="text"
@@ -67,7 +67,7 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onEditEnd }) => {
               onChange={}
             />
           </div>
-          <div class="ui mini horizontal divided list">
+          <div class="eight wide ui mini horizontal divided list">
             {renderedTags}
           </div>
         </div>
