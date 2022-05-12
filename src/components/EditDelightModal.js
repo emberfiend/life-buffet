@@ -48,13 +48,13 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, 
             />
           </div>
           <div className="field">
-            <label>Image URL</label>
+            <label>Image URLs</label>
             <input
               type="text"
-              name="imageurl"
-              placeholder="Give an image URL. No hotlinking! Only files you host."
-              defaultValue={editModalTarget.imageUrl}
-              onChange={(e) => onImageUrlChange(e.target.value)}
+              name="imageurls"
+              placeholder="Give one or more image URL(s). No hotlinking! Only files you host."
+              defaultValue={editModalTarget.imageUrls[0]}
+              onChange={(e) => onImageUrlsChange(e.target.value)}
             />
           </div>
           <div className="eight wide field">

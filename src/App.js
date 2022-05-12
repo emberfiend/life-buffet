@@ -32,24 +32,43 @@ class App extends React.Component {
   saveToLocalStorage = () => {
     console.log('saveToLocalStorage');
     localStorage.setItem('pool', JSON.stringify(this.state.poolDelights));
-    localStorage.setItem('path', JSON.stringify(this.state.pathDelights));
+    //localStorage.setItem('path', JSON.stringify(this.state.pathDelights));
   };
 
   loadPool = () => {
+    // TODO: restructure imageUrl to imageUrls: an array of image urls. a random one is used on render, then a timer shuffles visible (within scroll window) images to their alternatives
+
     if (localStorage.getItem('pool') === null) {
       console.log('No pool in localstorage - generating items');
       const newPool = [
         {
           name: 'Draw',
           description: 'Put lines on paper using lead!',
-          imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
-          tags: ['indoors', 'outdoors', 'creative', 'cheap'],
+          imageUrls: ['https://andrewbackhouse.com/res/reeds.jpg'],
+          tags: [
+            'indoors',
+            'outdoors',
+            'creative',
+            'solo',
+            'cheap',
+            'risk-none',
+          ],
         },
         {
           name: 'Skateboard',
           description: 'Ride your sweet chrome into the sunset!',
-          imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
-          tags: ['outdoors', 'skill', 'risk-moderate'],
+          imageUrls: [
+            'https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg',
+          ],
+          tags: ['outdoors', 'skill', 'social', 'solo', 'risk-moderate'],
+        },
+        {
+          name: 'Football / Soccer',
+          description: 'Kick balls into nets, and have fun doing it',
+          imageUrls: [
+            'https://lifebuffet.org/res/soccer-7056003 by Dimitris Vetsikas on Pixabay.jpg',
+          ],
+          tags: ['outdoors', 'skill', 'social', 'risk-minor'],
         },
       ];
       localStorage.setItem('pool', JSON.stringify(newPool));
@@ -72,7 +91,7 @@ class App extends React.Component {
     return {
       name: '',
       description: '',
-      imageUrl: '',
+      imageUrls: [''],
       tags: [term == undefined ? '' : term],
     };
   }
@@ -207,7 +226,7 @@ class App extends React.Component {
     }));
   };
 
-  onImageUrlChange = (imageUrl) => {
+  onImageUrlsChange = (imageUrls) => {
     console.log('onImageUrlChange');
 
     function updateImageUrlDescription(d, newImageUrl) {

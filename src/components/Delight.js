@@ -10,11 +10,18 @@ const Delight = ({
   onDelete,
   onDrag,
 }) => {
-  // delight: name, description, imageUrl, tags
+  // delight: name, description, imageUrls[], tags[]
 
   const renderedTags = delight.tags.map((tag) => {
     return <span key={tag}>{tag} </span>;
   });
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  const randomImageUrl =
+    delight.imageUrls[getRandomInt(delight.imageUrls.length)];
 
   const hasTargetTag = delight.tags.reduce((state, next) => {
     return state || next.includes(targetTag);
@@ -36,6 +43,7 @@ const Delight = ({
         src={delight.imageUrl}
         width="100%"
         height="100px"
+        style={{ objectFit: 'cover' }}
       />
       <div className="content">
         <div className="ui grid">
