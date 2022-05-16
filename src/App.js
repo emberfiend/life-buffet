@@ -44,7 +44,10 @@ class App extends React.Component {
         {
           name: 'Draw',
           description: 'Put lines on paper using lead!',
-          imageUrls: ['https://andrewbackhouse.com/res/reeds.jpg'],
+          imageUrls: [
+            'https://andrewbackhouse.com/res/reeds.jpg',
+            'https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg',
+          ],
           tags: [
             'indoors',
             'outdoors',

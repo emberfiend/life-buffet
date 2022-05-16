@@ -40,7 +40,7 @@ const Delight = ({
       <img
         alt={delight.name}
         className="ui image"
-        src={delight.imageUrl}
+        src={randomImageUrl}
         width="100%"
         height="100px"
         style={{ objectFit: 'cover' }}
