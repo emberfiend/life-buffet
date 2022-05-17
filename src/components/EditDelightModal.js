@@ -1,6 +1,6 @@
 import React from 'react';
 
-const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, onImageUrlChange, onEditEnd }) => {
+const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, onTagAdd, onTagDelete, onImageUrlAdd, onImageUrlDelete, onEditEnd }) => {
   // editModalTarget MAY already be a delight; prefill fields if it is
   // retain the edit-in-progress in the editModalTarget object, can save it to localStorage even
   // but when it comes to actually committing it to the main pool, be careful with name collisions
@@ -14,7 +14,17 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, 
     return (
       <div class="item">
         <div class="content">
-          {t}
+          {t} <i onClick={() => onTagDelete(t)} className="trash icon"></i>
+        </div>
+      </div>
+    );
+  });
+
+  var renderedImageUrls = editModalTarget.imageUrls.map((iu) => {
+    return (
+      <div class="item">
+        <div class="content">
+          {iu} <i onClick={() => onImageUrlDelete(iu)} className="trash icon"></i>
         </div>
       </div>
     );
@@ -47,15 +57,23 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, 
               onChange={(e) => onDescriptionChange(e.target.value)}
             />
           </div>
-          <div className="field">
-            <label>Image URLs</label>
-            <input
-              type="text"
-              name="imageurls"
-              placeholder="Give one or more image URL(s). No hotlinking! Only files you host."
-              defaultValue={editModalTarget.imageUrls[0]}
-              onChange={(e) => onImageUrlsChange(e.target.value)}
-            />
+          <div className="fields">
+            <div className="fourteen wide field">
+              <label>Image URLs</label>
+              <input
+                type="text"
+                name="imageurls"
+                placeholder="Give one or more image URL(s). No hotlinking! Only files you host."
+                defaultValue={editModalTarget.imageUrls[0]}
+                onChange={(e) => onNewImageUrlChange(e.target.value)}
+              />
+            </div>
+            <div className="two wide ui button" onClick={() => onImageUrlAdd()}>
+              Add URL
+            </div>
+          </div>
+          <div class="ui mini vertical divided list">
+            {renderedImageUrls}
           </div>
           <div className="eight wide field">
             <label>Tags</label>
