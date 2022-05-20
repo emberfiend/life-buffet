@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Delight = ({
   delight,
@@ -16,16 +16,30 @@ const Delight = ({
     return <span key={tag}>{tag} </span>;
   });
 
+  const hasTargetTag = delight.tags.reduce((state, next) => {
+    return state || next.includes(targetTag);
+  }, false);
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
 
-  const randomImageUrl =
-    delight.imageUrls[getRandomInt(delight.imageUrls.length)];
+  // TODO: optimize by skipping this if the delight is off-screen
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      //console.log('image update, currentIndex is ' + currentImageIndex);
+      if (currentImageIndex === delight.imageUrls.length - 1) {
+        setCurrentImageIndex(0);
+      } else {
+        //console.log(`calling setCII with ${currentImageIndex + 1}`);
+        setCurrentImageIndex(currentImageIndex + 1);
+      }
+    }, 2500 + getRandomInt(10000));
 
-  const hasTargetTag = delight.tags.reduce((state, next) => {
-    return state || next.includes(targetTag);
-  }, false);
+    return () => clearInterval(intervalId);
+  }); // empty array omitted here - we want a re-run at every render
 
   /*const hasOwnTag = delight.tags.reduce((state, next) => {
     return state || next.includes(ownTag);
@@ -40,7 +54,7 @@ const Delight = ({
       <img
         alt={delight.name}
         className="ui image"
-        src={randomImageUrl}
+        src={delight.imageUrls[currentImageIndex]}
         width="100%"
         height="100px"
         style={{ objectFit: 'cover' }}
