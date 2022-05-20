@@ -139,33 +139,6 @@ class App extends React.Component {
     }
   };
 
-  onEditStart = (term, delight) => {
-    // this invokes the edit modal, pre-filling fields if we're editing an existing one
-    // editModalNew, editModalIndex
-
-    console.log('onEditStart');
-
-    if (delight != null) {
-      const targetDelightIndex = this.state.poolDelights.findIndex(
-        (d) => d.name == delight.name
-      );
-
-      console.log(`Editing existing delight at index ${targetDelightIndex}`);
-
-      this.setState({
-        editModalTarget: { ...delight }, // need to edit a copy to allow cancelling
-        editModalIndex: targetDelightIndex,
-      });
-    } else {
-      console.log('Editing new delight');
-      this.setState({
-        editModalTarget: this.makeFreshDelight(term),
-        editModalIndex: -1,
-      });
-    }
-    this.setState({ editModalShow: true });
-  };
-
   /*onAdd = (term, delight) => {
     // this should auto-add the filter term as a tag, if present
 
@@ -251,62 +224,38 @@ class App extends React.Component {
     this.setState({ termTwo: term });
   };
 
-  // ### EditDelightModal functions ###
+  // ### Editing start / end ###
 
-  // TODO: refactor these - there must be a way to at least inline the update function
-  onNameChange = (name) => {
-    console.log('onNameChange');
+  onEditStart = (term, delight) => {
+    // this invokes the edit modal, pre-filling fields if we're editing an existing one
+    // editModalNew, editModalIndex
 
-    function updateDelightName(d, newName) {
-      d.name = newName;
-      return d;
+    console.log('onEditStart');
+
+    if (delight != null) {
+      const targetDelightIndex = this.state.poolDelights.findIndex(
+        (d) => d.name == delight.name
+      );
+
+      console.log(`Editing existing delight at index ${targetDelightIndex}`);
+
+      this.setState({
+        // need to edit a copy to allow cancelling - spread { ...delight } was almost good enough, but it was retaining references to the old tag and imageUrl arrays
+        editModalTarget: structuredClone(delight),
+        editModalIndex: targetDelightIndex,
+      });
+    } else {
+      console.log('Editing new delight');
+      this.setState({
+        editModalTarget: this.makeFreshDelight(term), // already happens
+        editModalIndex: -1,
+      });
     }
-
-    this.setState((prevState) => ({
-      editModalTarget: updateDelightName(prevState.editModalTarget, name),
-    }));
+    this.setState({ editModalShow: true });
   };
 
-  onDescriptionChange = (description) => {
-    console.log('onDescriptionChange');
-
-    function updateDelightDescription(d, newDescription) {
-      d.description = newDescription;
-      return d;
-    }
-
-    this.setState((prevState) => ({
-      editModalTarget: updateDelightDescription(
-        prevState.editModalTarget,
-        description
-      ),
-    }));
-  };
-
-  onTagAdd = () => {};
-
-  onTagDelete = () => {};
-
-  onImageUrlAdd = (imageUrl) => {
-    console.log('onImageUrlAdd');
-
-    function addImageUrlIfAbsent(d, newImageUrl) {
-      const imageUrlExists = d.imageUrls.reduce((state, next) => {
-        return state || next === newImageUrl;
-      }, false);
-
-      if (!imageUrlExists) {
-        d.imageUrls.push(newImageUrl);
-      }
-      return d;
-    }
-
-    this.setState((prevState) => ({
-      editModalTarget: addImageUrlIfAbsent(prevState.editModalTarget, imageUrl),
-    }));
-  };
-
-  onImageUrlDelete = () => {};
+  // BUG: a newly-added tag or imageUrl is saved to the edited delight, even if you cancel out (onEditEnd(false)) of the edit dialogue
+  // possibly related to localStorage save/load?
 
   onEditEnd = (save) => {
     // dismiss the modal and call the function which actually adds it
@@ -339,6 +288,102 @@ class App extends React.Component {
     }
 
     this.setState({ editModalShow: false });
+  };
+
+  // ### EditDelightModal functions ###
+
+  // TODO: refactor these - there must be a way to at least inline the update function
+  onNameChange = (name) => {
+    console.log('onNameChange');
+
+    function updateDelightName(d, newName) {
+      d.name = newName;
+      return d;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: updateDelightName(prevState.editModalTarget, name),
+    }));
+  };
+
+  onDescriptionChange = (description) => {
+    console.log('onDescriptionChange');
+
+    function updateDelightDescription(d, newDescription) {
+      d.description = newDescription;
+      return d;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: updateDelightDescription(
+        prevState.editModalTarget,
+        description
+      ),
+    }));
+  };
+
+  onTagAdd = (tag) => {
+    console.log('onTagAdd');
+
+    function addTagIfAbsent(delight, tag) {
+      const tagExists = delight.tags.reduce((state, next) => {
+        return state || next === tag;
+      }, false);
+
+      if (!tagExists) {
+        delight.tags.push(tag);
+      }
+      return delight;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: addTagIfAbsent(prevState.editModalTarget, tag),
+    }));
+  };
+
+  onTagDelete = (tag) => {
+    console.log('onTagDelete');
+
+    function filterTag(delight, tag) {
+      delight.tags = delight.tags.filter((u) => u !== tag);
+      return delight;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: filterTag(prevState.editModalTarget, tag),
+    }));
+  };
+
+  onImageUrlAdd = (imageUrl) => {
+    console.log('onImageUrlAdd');
+
+    function addImageUrlIfAbsent(delight, newImageUrl) {
+      const imageUrlExists = delight.imageUrls.reduce((state, next) => {
+        return state || next === newImageUrl;
+      }, false);
+
+      if (!imageUrlExists) {
+        delight.imageUrls.push(newImageUrl);
+      }
+      return delight;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: addImageUrlIfAbsent(prevState.editModalTarget, imageUrl),
+    }));
+  };
+
+  onImageUrlDelete = (imageUrl) => {
+    console.log('onImageUrlDelete');
+
+    function filterUrl(delight, imageUrl) {
+      delight.imageUrls = delight.imageUrls.filter((u) => u !== imageUrl);
+      return delight;
+    }
+
+    this.setState((prevState) => ({
+      editModalTarget: filterUrl(prevState.editModalTarget, imageUrl),
+    }));
   };
 
   render() {

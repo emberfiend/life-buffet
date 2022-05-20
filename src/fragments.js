@@ -1,8 +1,39 @@
-<div class="ui mini horizontal divided list">
-  {renderedTags}
-</div>
+// the TAG ARRAY was the same?!?!
 
+console.log(
+  Object.is(this.state.editModalTarget.tags, this.state.poolDelights[0].tags)
+);
 
+// before removing editModalIndex
+
+onEditStart = (term, delight) => {
+  // this invokes the edit modal, pre-filling fields if we're editing an existing one
+  // editModalNew, editModalIndex
+
+  console.log('onEditStart');
+
+  if (delight != null) {
+    const targetDelightIndex = this.state.poolDelights.findIndex(
+      (d) => d.name == delight.name
+    );
+
+    console.log(`Editing existing delight at index ${targetDelightIndex}`);
+
+    this.setState({
+      editModalTarget: { ...delight }, // need to edit a copy to allow cancelling
+      editModalIndex: targetDelightIndex,
+    });
+  } else {
+    console.log('Editing new delight');
+    this.setState({
+      editModalTarget: this.makeFreshDelight(term), // already happens
+      editModalIndex: -1, // pretty sure I'm not using this anywhere
+    });
+  }
+  this.setState({ editModalShow: true });
+};
+
+<div class="ui mini horizontal divided list">{renderedTags}</div>;
 
 // previous onPoolSelect design involving two separate pools
 if (!this.state.pathDelights.some((d) => d.name === delight.name)) {

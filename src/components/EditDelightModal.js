@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, onTagAdd, onTagDelete, onImageUrlAdd, onImageUrlDelete, onEditEnd }) => {
+const EditDelightModal = ({
+  editModalTarget,
+  onNameChange,
+  onDescriptionChange,
+  onTagAdd,
+  onTagDelete,
+  onImageUrlAdd,
+  onImageUrlDelete,
+  onEditEnd,
+}) => {
   // editModalTarget MAY already be a delight; prefill fields if it is
   // retain the edit-in-progress in the editModalTarget object, can save it to localStorage even
   // but when it comes to actually committing it to the main pool, be careful with name collisions
@@ -10,11 +19,28 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, 
   console.log(editModalTarget);
   const editMode = editModalTarget.name.length > 0;
 
+  const [newImageUrl, setNewImageUrl] = useState('');
+
+  const onNewImageUrlChange = (imageUrl) => {
+    setNewImageUrl(imageUrl);
+  };
+
+  const [newTag, setNewTag] = useState('');
+
+  const onNewTagChange = (tag) => {
+    setNewTag(tag);
+  };
+
   var renderedTags = editModalTarget.tags.map((t) => {
     return (
       <div class="item">
         <div class="content">
-          {t} <i onClick={() => onTagDelete(t)} className="trash icon"></i>
+          {t}{' '}
+          <i
+            onClick={() => onTagDelete(t)}
+            className="trash icon"
+            style={{ cursor: 'pointer' }}
+          ></i>
         </div>
       </div>
     );
@@ -24,7 +50,15 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, 
     return (
       <div class="item">
         <div class="content">
-          {iu} <i onClick={() => onImageUrlDelete(iu)} className="trash icon"></i>
+          {iu} &nbsp;
+          <a href={iu} target="_blank">
+            <i className="clone icon"></i>
+          </a>
+          <i
+            onClick={() => onImageUrlDelete(iu)}
+            className="trash icon"
+            style={{ cursor: 'pointer' }}
+          ></i>
         </div>
       </div>
     );
@@ -32,9 +66,7 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, 
 
   return (
     <div className="ui active modal">
-      <div class="header">
-        {editMode ? 'Edit' : 'Add'} Delight
-      </div>
+      <div class="header">{editMode ? 'Edit' : 'Add'} Delight</div>
       <form className="ui form">
         <div className="ui segment">
           <div className="field">
@@ -57,36 +89,51 @@ const EditDelightModal = ({ editModalTarget, onNameChange, onDescriptionChange, 
               onChange={(e) => onDescriptionChange(e.target.value)}
             />
           </div>
-          <div className="fields">
-            <div className="fourteen wide field">
-              <label>Image URLs</label>
-              <input
-                type="text"
-                name="imageurls"
-                placeholder="Give one or more image URL(s). No hotlinking! Only files you host."
-                defaultValue={editModalTarget.imageUrls[0]}
-                onChange={(e) => onNewImageUrlChange(e.target.value)}
-              />
-            </div>
-            <div className="two wide ui button" onClick={() => onImageUrlAdd()}>
-              Add URL
+          <div className="field">
+            <label>Image URLs</label>
+            <div className="fields">
+              <div className="fourteen wide field">
+                <input
+                  type="text"
+                  name="imageurls"
+                  placeholder="Add one or more image URLs. No hotlinking! Only files you or lifebuffet hosts."
+                  defaultValue={newImageUrl}
+                  onChange={(e) => onNewImageUrlChange(e.target.value)}
+                />
+              </div>
+              <div className="two wide">
+                <div
+                  className="ui button"
+                  onClick={() => onImageUrlAdd(newImageUrl)}
+                >
+                  Add
+                </div>
+              </div>
             </div>
           </div>
-          <div class="ui mini vertical divided list">
-            {renderedImageUrls}
-          </div>
-          <div className="eight wide field">
+          <div class="ui mini vertical divided list">{renderedImageUrls}</div>
+          <div className="field">
             <label>Tags</label>
-            <input
-              type="text"
-              name="tags"
-              placeholder="Add tags for your delight. Tags help discoverability!"
-              defaultValue="" 
-              onChange={}
-            />
-          </div>
-          <div class="eight wide ui mini horizontal divided list">
-            {renderedTags}
+            <div className="fields">
+              <div className="six wide field">
+                <input
+                  type="text"
+                  name="tags"
+                  placeholder="Add tags for your delight. Tags help discoverability!"
+                  defaultValue={newTag}
+                  onChange={(e) => onNewTagChange(e.target.value)}
+                />
+              </div>
+              <div
+                className="two wide ui button"
+                onClick={() => onTagAdd(newTag)}
+              >
+                Add
+              </div>
+              <div class="eight wide ui mini horizontal divided list">
+                {renderedTags}
+              </div>
+            </div>
           </div>
         </div>
       </form>
