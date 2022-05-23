@@ -50,7 +50,7 @@ const Delight = ({
     isNotEmpty && delight.tags.filter((t) => t == ownTag).length > 0;
 
   return (
-    <div className="card">
+    <div className="card" style={{ maxWidth: '30%' }}>
       <img
         alt={delight.name}
         className="ui image"
@@ -60,34 +60,33 @@ const Delight = ({
         style={{ objectFit: 'cover' }}
       />
       <div className="content">
-        <div className="ui grid">
-          <div className="nine wide column">
-            <div className="header">{delight.name}</div>
-          </div>
-          <div className="one wide column">
-            <i
-              onClick={() => onEditStart(ownTag, delight)}
-              className="edit icon"
-            ></i>
-          </div>
-          <div className="one wide column">
-            <i
-              onClick={() => onSelect(delight)}
-              className={!hasTargetTag ? `plus icon` : ''}
-            ></i>
-          </div>
-          <div className="one wide column">
-            <i
-              onClick={() => onUntag(delight)}
-              className={isRemovable ? `minus icon` : ``}
-            ></i>
-          </div>
-          <div className="one wide column">
-            <i onClick={() => onDelete(delight)} className="trash icon"></i>
-          </div>
+        <div className="align-center" style={{ marginBottom: '0.8em' }}>
+          <i
+            onClick={() => onEditStart(ownTag, delight)}
+            className="edit icon"
+            style={{ cursor: 'pointer' }}
+          ></i>
+          <i
+            onClick={() => onSelect(delight)}
+            className={!hasTargetTag ? `plus icon` : ''}
+            style={{ cursor: 'pointer' }}
+          ></i>
+          <i
+            onClick={() => onUntag(delight)}
+            className={isRemovable ? `minus icon` : ``}
+            style={{ cursor: 'pointer' }}
+          ></i>
+          <i
+            onClick={() => onDelete(delight)}
+            className="trash icon"
+            style={{ cursor: 'pointer' }}
+          ></i>
         </div>
+
+        <div className="header">{delight.name}</div>
+
         <div>{delight.description}</div>
-        <div>Tags: {renderedTags}</div>
+        <div className="smaller-text">Tags: {renderedTags}</div>
       </div>
     </div>
   );

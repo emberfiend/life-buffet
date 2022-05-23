@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Draw",
+    "description": "Put lines on paper using lead!",
+    "imageUrls": [
+      "https://andrewbackhouse.com/res/reeds.jpg",
+      "https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg"
+    ],
+    "tags": ["indoors", "outdoors", "creative", "solo", "cheap", "risk-none"]
+  },
+  {
+    "name": "Skateboard",
+    "description": "Ride your sweet chrome into the sunset!",
+    "imageUrls": [
+      "https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg"
+    ],
+    "tags": ["outdoors", "skill", "social", "solo", "risk-moderate"]
+  },
+  {
+    "name": "Football / Soccer",
+    "description": "Kick balls into nets, and have fun doing it",
+    "imageUrls": [
+      "https://lifebuffet.org/res/soccer-7056003 by Dimitris Vetsikas on Pixabay.jpg"
+    ],
+    "tags": ["outdoors", "skill", "social", "risk-minor"]
+  }
+]

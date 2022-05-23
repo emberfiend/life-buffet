@@ -65,84 +65,86 @@ const EditDelightModal = ({
   });
 
   return (
-    <div className="ui active modal">
-      <div class="header">{editMode ? 'Edit' : 'Add'} Delight</div>
-      <form className="ui form">
-        <div className="ui segment">
-          <div className="field">
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Name your delight. Must be unique!"
-              value={editModalTarget.name}
-              onChange={(e) => onNameChange(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label>Description</label>
-            <input
-              type="text"
-              name="description"
-              placeholder="Describe your delight."
-              defaultValue={editModalTarget.description}
-              onChange={(e) => onDescriptionChange(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label>Image URLs</label>
-            <div className="fields">
-              <div className="fourteen wide field">
-                <input
-                  type="text"
-                  name="imageurls"
-                  placeholder="Add one or more image URLs. No hotlinking! Only files you or lifebuffet hosts."
-                  defaultValue={newImageUrl}
-                  onChange={(e) => onNewImageUrlChange(e.target.value)}
-                />
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="ui active modal" style={{ position: 'fixed' }}>
+        <div className="header">{editMode ? 'Edit' : 'Add'} Delight</div>
+        <form className="ui form">
+          <div className="ui segment">
+            <div className="field">
+              <label>Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Name your delight. Must be unique!"
+                value={editModalTarget.name}
+                onChange={(e) => onNameChange(e.target.value)}
+              />
+            </div>
+            <div className="field">
+              <label>Description</label>
+              <input
+                type="text"
+                name="description"
+                placeholder="Describe your delight."
+                defaultValue={editModalTarget.description}
+                onChange={(e) => onDescriptionChange(e.target.value)}
+              />
+            </div>
+            <div className="field">
+              <label>Image URLs</label>
+              <div className="fields">
+                <div className="fourteen wide field">
+                  <input
+                    type="text"
+                    name="imageurls"
+                    placeholder="Add one or more image URLs. No hotlinking! Only files you or lifebuffet hosts."
+                    defaultValue={newImageUrl}
+                    onChange={(e) => onNewImageUrlChange(e.target.value)}
+                  />
+                </div>
+                <div className="two wide">
+                  <div
+                    className="ui button"
+                    onClick={() => onImageUrlAdd(newImageUrl)}
+                  >
+                    Add
+                  </div>
+                </div>
               </div>
-              <div className="two wide">
+            </div>
+            <div class="ui mini vertical divided list">{renderedImageUrls}</div>
+            <div className="field">
+              <label>Tags</label>
+              <div className="fields">
+                <div className="six wide field">
+                  <input
+                    type="text"
+                    name="tags"
+                    placeholder="Add tags for your delight. Tags help discoverability!"
+                    defaultValue={newTag}
+                    onChange={(e) => onNewTagChange(e.target.value)}
+                  />
+                </div>
                 <div
-                  className="ui button"
-                  onClick={() => onImageUrlAdd(newImageUrl)}
+                  className="two wide ui button"
+                  onClick={() => onTagAdd(newTag)}
                 >
                   Add
+                </div>
+                <div class="eight wide ui mini horizontal divided list">
+                  {renderedTags}
                 </div>
               </div>
             </div>
           </div>
-          <div class="ui mini vertical divided list">{renderedImageUrls}</div>
-          <div className="field">
-            <label>Tags</label>
-            <div className="fields">
-              <div className="six wide field">
-                <input
-                  type="text"
-                  name="tags"
-                  placeholder="Add tags for your delight. Tags help discoverability!"
-                  defaultValue={newTag}
-                  onChange={(e) => onNewTagChange(e.target.value)}
-                />
-              </div>
-              <div
-                className="two wide ui button"
-                onClick={() => onTagAdd(newTag)}
-              >
-                Add
-              </div>
-              <div class="eight wide ui mini horizontal divided list">
-                {renderedTags}
-              </div>
-            </div>
+        </form>
+        <div class="actions">
+          <div class="ui approve button" onClick={() => onEditEnd(true)}>
+            Save
           </div>
-        </div>
-      </form>
-      <div class="actions">
-        <div class="ui approve button" onClick={() => onEditEnd(true)}>
-          Save
-        </div>
-        <div class="ui cancel button" onClick={() => onEditEnd(false)}>
-          Cancel
+          <div class="ui cancel button" onClick={() => onEditEnd(false)}>
+            Cancel
+          </div>
         </div>
       </div>
     </div>

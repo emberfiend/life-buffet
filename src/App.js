@@ -1,4 +1,5 @@
 import React from 'react';
+import { saveTemplateAsFile } from './utility';
 import './style.css';
 
 import DelightList from './components/DelightList';
@@ -224,72 +225,6 @@ class App extends React.Component {
     this.setState({ termTwo: term });
   };
 
-  // ### Editing start / end ###
-
-  onEditStart = (term, delight) => {
-    // this invokes the edit modal, pre-filling fields if we're editing an existing one
-    // editModalNew, editModalIndex
-
-    console.log('onEditStart');
-
-    if (delight != null) {
-      const targetDelightIndex = this.state.poolDelights.findIndex(
-        (d) => d.name == delight.name
-      );
-
-      console.log(`Editing existing delight at index ${targetDelightIndex}`);
-
-      this.setState({
-        // need to edit a copy to allow cancelling - spread { ...delight } was almost good enough, but it was retaining references to the old tag and imageUrl arrays
-        editModalTarget: structuredClone(delight),
-        editModalIndex: targetDelightIndex,
-      });
-    } else {
-      console.log('Editing new delight');
-      this.setState({
-        editModalTarget: this.makeFreshDelight(term), // already happens
-        editModalIndex: -1,
-      });
-    }
-    this.setState({ editModalShow: true });
-  };
-
-  // BUG: a newly-added tag or imageUrl is saved to the edited delight, even if you cancel out (onEditEnd(false)) of the edit dialogue
-  // possibly related to localStorage save/load?
-
-  onEditEnd = (save) => {
-    // dismiss the modal and call the function which actually adds it
-
-    console.log(`onEditEnd with save state ${save}`);
-
-    if (save) {
-      // careful here: can't refer to (normal) state because of where it's being used
-      function spliceIntoOrAppendToArray(oldDelights, newDelight, index) {
-        var newArray = [...oldDelights];
-        if (index > -1) {
-          console.log(`Splicing into pool delights at ${index}`);
-          newArray.splice(index, 1, newDelight);
-        } else {
-          if (!oldDelights.some((d) => d.name === newDelight.name)) {
-            console.log('Absent from pool delights, appending to array');
-            newArray.push(newDelight);
-          }
-        }
-        return newArray;
-      }
-
-      this.setState((prevState) => ({
-        poolDelights: spliceIntoOrAppendToArray(
-          prevState.poolDelights,
-          prevState.editModalTarget,
-          prevState.editModalIndex
-        ),
-      }));
-    }
-
-    this.setState({ editModalShow: false });
-  };
-
   // ### EditDelightModal functions ###
 
   // TODO: refactor these - there must be a way to at least inline the update function
@@ -386,6 +321,100 @@ class App extends React.Component {
     }));
   };
 
+  onEditStart = (term, delight) => {
+    // this invokes the edit modal, pre-filling fields if we're editing an existing one
+    // editModalNew, editModalIndex
+
+    console.log('onEditStart');
+
+    if (delight != null) {
+      const targetDelightIndex = this.state.poolDelights.findIndex(
+        (d) => d.name == delight.name
+      );
+
+      console.log(`Editing existing delight at index ${targetDelightIndex}`);
+
+      this.setState({
+        // need to edit a copy to allow cancelling - spread { ...delight } was almost good enough, but it was retaining references to the old tag and imageUrl arrays
+        editModalTarget: structuredClone(delight),
+        editModalIndex: targetDelightIndex,
+      });
+    } else {
+      console.log('Editing new delight');
+      this.setState({
+        editModalTarget: this.makeFreshDelight(term), // already happens
+        editModalIndex: -1,
+      });
+    }
+    this.setState({ editModalShow: true });
+  };
+
+  // BUG: a newly-added tag or imageUrl is saved to the edited delight, even if you cancel out (onEditEnd(false)) of the edit dialogue
+  // possibly related to localStorage save/load?
+
+  onEditEnd = (save) => {
+    // dismiss the modal and call the function which actually adds it
+
+    console.log(`onEditEnd with save state ${save}`);
+
+    if (save) {
+      // careful here: can't refer to (normal) state because of where it's being used
+      function spliceIntoOrAppendToArray(oldDelights, newDelight, index) {
+        var newArray = [...oldDelights];
+        if (index > -1) {
+          console.log(`Splicing into pool delights at ${index}`);
+          newArray.splice(index, 1, newDelight);
+        } else {
+          if (!oldDelights.some((d) => d.name === newDelight.name)) {
+            console.log('Absent from pool delights, appending to array');
+            newArray.push(newDelight);
+          }
+        }
+        return newArray;
+      }
+
+      this.setState((prevState) => ({
+        poolDelights: spliceIntoOrAppendToArray(
+          prevState.poolDelights,
+          prevState.editModalTarget,
+          prevState.editModalIndex
+        ),
+      }));
+    }
+
+    this.setState({ editModalShow: false });
+  };
+
+  // ### data management functions ###
+
+  // overwrite: determines whether name-matched delights will have their contents overwritten
+  onImport = (overwrite) => {
+    function appendNewItemsToArray(oldDelights, newDelights) {
+      var newArray = [...oldDelights];
+      if (index > -1) {
+        console.log(`Splicing into pool delights at ${index}`);
+        newArray.splice(index, 1, newDelight);
+      } else {
+        if (!oldDelights.some((d) => d.name === newDelight.name)) {
+          console.log('Absent from pool delights, appending to array');
+          newArray.push(newDelight);
+        }
+      }
+      return newArray;
+    }
+
+    this.setState((prevState) => ({
+      poolDelights: spliceIntoOrAppendToArray(
+        prevState.poolDelights,
+        loadedDelights
+      ),
+    }));
+  };
+
+  onExport = () => {
+    saveTemplateAsFile('delights.json', this.state.poolDelights);
+  };
+
   render() {
     return (
       <div>
@@ -403,7 +432,7 @@ class App extends React.Component {
         ) : (
           ''
         )}
-        <div className="ui raised very padded text container segment">
+        <div className="ui text container" style={{ minWidth: '95%' }}>
           <DelightList
             name="To taste"
             term={this.state.termOne}
@@ -431,6 +460,14 @@ class App extends React.Component {
             onDelete={this.onDelete}
             onDrag={this.onPoolDrag}
           />
+          <div className="align-center" style={{ padding: '2em' }}>
+            <div className="two wide ui button" onClick={this.onImport}>
+              Import
+            </div>
+            <div className="two wide ui button" onClick={this.onExport}>
+              Export
+            </div>
+          </div>
         </div>
       </div>
     );
