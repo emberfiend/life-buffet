@@ -84,8 +84,7 @@ const Delight = ({
         </div>
 
         <div className="header">{delight.name}</div>
-
-        <div>{delight.description}</div>
+        <div className="body-text">{delight.description}</div>
         <div className="smaller-text">Tags: {renderedTags}</div>
       </div>
     </div>

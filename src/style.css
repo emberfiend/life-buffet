@@ -7,8 +7,13 @@ p {
   font-weight: 800;
 }
 
+.body-text {
+  line-height: 100%;
+}
+
 .smaller-text {
   font-size: 70%;
+  margin-top: 0.3em;
 }
 
 .wider {
