@@ -1,6 +1,6 @@
 // from MSOACC https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser?answertab=modifieddesc#tab-top
 export function saveTemplateAsFile(filename, dataObjToWrite) {
-  const blob = new Blob([JSON.stringify(dataObjToWrite)], {
+  const blob = new Blob([JSON.stringify(dataObjToWrite, null, 2)], {
     type: 'text/json',
   });
   const link = document.createElement('a');

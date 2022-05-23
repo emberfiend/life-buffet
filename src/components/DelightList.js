@@ -16,6 +16,8 @@ const DelightList = ({
   //const [term, setTerm] = useState(defaultFilter);
   const [filteredDelights, setFilteredDelights] = useState([]);
 
+  console.log('term is ' + term);
+
   useEffect(() => {
     setFilteredDelights(
       delights.filter((d) => {

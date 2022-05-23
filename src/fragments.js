@@ -1,3 +1,74 @@
+// deprecated onAdd
+
+/*onAdd = (term, delight) => {
+  // this should auto-add the filter term as a tag, if present
+
+  console.log(
+    `Item clicked for addition from section with term ${term} (using dummy delight for now).`
+  );
+  const newDelight = {
+    name: 'Dummy',
+    description: 'Test',
+    imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
+    tags: ['test', 'test2'],
+  };
+
+  if (term.length > 0) {
+    if (
+      !newDelight.tags.reduce((state, next) => {
+        return state || next.includes(term);
+      }, false)
+    ) {
+      newDelight.tags.push(term);
+    }
+  }
+
+  if (!this.state.poolDelights.some((d) => d.name === newDelight.name)) {
+    console.log('Absent from pool delights');
+
+    this.setState((prevState) => ({
+      poolDelights: [...prevState.poolDelights, newDelight],
+    }));
+  }
+};*/
+
+// manual json building
+
+/*const newPool = [
+  {
+    name: 'Draw',
+    description: 'Put lines on paper using lead!',
+    imageUrls: [
+      'https://andrewbackhouse.com/res/reeds.jpg',
+      'https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg',
+    ],
+    tags: [
+      'indoors',
+      'outdoors',
+      'creative',
+      'solo',
+      'cheap',
+      'risk-none',
+    ],
+  },
+  {
+    name: 'Skateboard',
+    description: 'Ride your sweet chrome into the sunset!',
+    imageUrls: [
+      'https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg',
+    ],
+    tags: ['outdoors', 'skill', 'social', 'solo', 'risk-moderate'],
+  },
+  {
+    name: 'Football / Soccer',
+    description: 'Kick balls into nets, and have fun doing it',
+    imageUrls: [
+      'https://lifebuffet.org/res/soccer-7056003 by Dimitris Vetsikas on Pixabay.jpg',
+    ],
+    tags: ['outdoors', 'skill', 'social', 'risk-minor'],
+  },
+];*/
+
 // the TAG ARRAY was the same?!?!
 
 console.log(

@@ -1,5 +1,6 @@
 import React from 'react';
 import { saveTemplateAsFile } from './utility';
+import basicDelights from './basic-delights.json';
 import './style.css';
 
 import DelightList from './components/DelightList';
@@ -10,6 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       poolDelights: this.loadPool(),
+      importedDelights: [],
       editModalShow: false,
       editModalTarget: this.makeFreshDelight(),
       editModalIndex: -1,
@@ -37,44 +39,9 @@ class App extends React.Component {
   };
 
   loadPool = () => {
-    // TODO: restructure imageUrl to imageUrls: an array of image urls. a random one is used on render, then a timer shuffles visible (within scroll window) images to their alternatives
-
     if (localStorage.getItem('pool') === null) {
       console.log('No pool in localstorage - generating items');
-      const newPool = [
-        {
-          name: 'Draw',
-          description: 'Put lines on paper using lead!',
-          imageUrls: [
-            'https://andrewbackhouse.com/res/reeds.jpg',
-            'https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg',
-          ],
-          tags: [
-            'indoors',
-            'outdoors',
-            'creative',
-            'solo',
-            'cheap',
-            'risk-none',
-          ],
-        },
-        {
-          name: 'Skateboard',
-          description: 'Ride your sweet chrome into the sunset!',
-          imageUrls: [
-            'https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg',
-          ],
-          tags: ['outdoors', 'skill', 'social', 'solo', 'risk-moderate'],
-        },
-        {
-          name: 'Football / Soccer',
-          description: 'Kick balls into nets, and have fun doing it',
-          imageUrls: [
-            'https://lifebuffet.org/res/soccer-7056003 by Dimitris Vetsikas on Pixabay.jpg',
-          ],
-          tags: ['outdoors', 'skill', 'social', 'risk-minor'],
-        },
-      ];
+      const newPool = basicDelights;
       localStorage.setItem('pool', JSON.stringify(newPool));
       return newPool;
     } else {
@@ -95,7 +62,7 @@ class App extends React.Component {
     return {
       name: '',
       description: '',
-      imageUrls: [''],
+      imageUrls: [],
       tags: [term == undefined ? '' : term],
     };
   }
@@ -139,38 +106,6 @@ class App extends React.Component {
       }));
     }
   };
-
-  /*onAdd = (term, delight) => {
-    // this should auto-add the filter term as a tag, if present
-
-    console.log(
-      `Item clicked for addition from section with term ${term} (using dummy delight for now).`
-    );
-    const newDelight = {
-      name: 'Dummy',
-      description: 'Test',
-      imageUrl: 'https://andrewbackhouse.com/res/reeds.jpg',
-      tags: ['test', 'test2'],
-    };
-
-    if (term.length > 0) {
-      if (
-        !newDelight.tags.reduce((state, next) => {
-          return state || next.includes(term);
-        }, false)
-      ) {
-        newDelight.tags.push(term);
-      }
-    }
-
-    if (!this.state.poolDelights.some((d) => d.name === newDelight.name)) {
-      console.log('Absent from pool delights');
-
-      this.setState((prevState) => ({
-        poolDelights: [...prevState.poolDelights, newDelight],
-      }));
-    }
-  };*/
 
   onUntag = (delight, term) => {
     console.log(`Delight ${delight.name} clicked for ${term} tag removal.`);
@@ -360,7 +295,7 @@ class App extends React.Component {
     if (save) {
       // careful here: can't refer to (normal) state because of where it's being used
       function spliceIntoOrAppendToArray(oldDelights, newDelight, index) {
-        var newArray = [...oldDelights];
+        var newArray = [...oldDelights]; // TODO: not a deep copy - think about consequences
         if (index > -1) {
           console.log(`Splicing into pool delights at ${index}`);
           newArray.splice(index, 1, newDelight);
@@ -387,10 +322,18 @@ class App extends React.Component {
 
   // ### data management functions ###
 
+  onImportOverwrite = () => {
+    this.onImport(true);
+  };
+
+  onImportWithoutOverwrite = () => {
+    this.onImport(false);
+  };
+
   // overwrite: determines whether name-matched delights will have their contents overwritten
   onImport = (overwrite) => {
-    function appendNewItemsToArray(oldDelights, newDelights) {
-      var newArray = [...oldDelights];
+    function appendNewItemsToArray(oldDelights, importedDelights, overwrite) {
+      /*var newArray = [...oldDelights];
       if (index > -1) {
         console.log(`Splicing into pool delights at ${index}`);
         newArray.splice(index, 1, newDelight);
@@ -400,19 +343,67 @@ class App extends React.Component {
           newArray.push(newDelight);
         }
       }
+      return newArray;*/
+
+      //console.log(oldDelights);
+      //console.log(importedDelights);
+      //console.log(importedDelights[0]);
+      //console.log(importedDelights[1]);
+
+      var newArray = structuredClone(oldDelights);
+      if (importedDelights.length > 0) {
+        // TODO: something more rock n roll than a for loop
+        for (var i = 0; i < importedDelights.length; i++) {
+          const importedDelight = importedDelights[i];
+          //console.log(importedDelight);
+          const exists = newArray.some((d) => d.name === importedDelight.name);
+          if (!exists) {
+            newArray.push(importedDelight);
+          } else if (overwrite) {
+            newArray[
+              newArray.findIndex((d) => d.name === importedDelight.name)
+            ] = importedDelight;
+          }
+        }
+      }
       return newArray;
     }
 
     this.setState((prevState) => ({
-      poolDelights: spliceIntoOrAppendToArray(
+      poolDelights: appendNewItemsToArray(
         prevState.poolDelights,
-        loadedDelights
+        prevState.importedDelights,
+        overwrite
       ),
     }));
   };
 
+  onImportField = (e) => {
+    const fileReader = new FileReader();
+    fileReader.readAsText(e.target.files[0], 'UTF-8');
+    fileReader.onload = (e) => {
+      //console.log('e.target.result', e.target.result);
+      //console.log(JSON.parse(e.target.result));
+      this.setState({ importedDelights: JSON.parse(e.target.result) });
+    };
+  };
+
   onExport = () => {
     saveTemplateAsFile('delights.json', this.state.poolDelights);
+  };
+
+  onSortAZ = () => {
+    function sortDelights(unsortedDelights) {
+      const unsortedDelightsClone = structuredClone(unsortedDelights);
+      unsortedDelightsClone.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+      return unsortedDelightsClone;
+    }
+
+    this.setState((prevState) => ({
+      poolDelights: sortDelights(prevState.poolDelights),
+    }));
   };
 
   render() {
@@ -460,12 +451,31 @@ class App extends React.Component {
             onDelete={this.onDelete}
             onDrag={this.onPoolDrag}
           />
-          <div className="align-center" style={{ padding: '2em' }}>
-            <div className="two wide ui button" onClick={this.onImport}>
-              Import
+          <div>
+            <div className="align-center" style={{ padding: '0.5em 1em' }}>
+              <div className="two wide ui button" onClick={this.onSortAZ}>
+                Sort A-Z
+              </div>
             </div>
-            <div className="two wide ui button" onClick={this.onExport}>
-              Export
+            <div className="align-center" style={{ padding: '0.5em 1em' }}>
+              <input type="file" onChange={this.onImportField} />
+              <div
+                className="two wide ui button"
+                onClick={this.onImportWithoutOverwrite}
+              >
+                Import
+              </div>
+              <div
+                className="two wide ui button"
+                onClick={this.onImportOverwrite}
+              >
+                Import and overwrite
+              </div>
+            </div>
+            <div className="align-center" style={{ padding: '0.5em 1em' }}>
+              <div className="two wide ui button" onClick={this.onExport}>
+                Export
+              </div>
             </div>
           </div>
         </div>
