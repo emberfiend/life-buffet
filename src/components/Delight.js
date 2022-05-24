@@ -63,30 +63,40 @@ const Delight = ({
         height="100px"
         style={{ objectFit: 'cover' }}
       />
-      <div className="content">
-        <div className="align-center" style={{ marginBottom: '0.8em' }}>
-          <i
-            onClick={() => onEditStart(ownTag, delight)}
-            className="edit icon"
-            style={{ cursor: 'pointer' }}
-          ></i>
-          <i
-            onClick={() => onSelect(delight)}
-            className={!hasTargetTag ? `plus icon` : ''}
-            style={{ cursor: 'pointer' }}
-          ></i>
-          <i
-            onClick={() => onUntag(delight)}
-            className={isRemovable ? `minus icon` : ``}
-            style={{ cursor: 'pointer' }}
-          ></i>
-          <i
-            onClick={() => onDelete(delight)}
-            className="trash icon"
-            style={{ cursor: 'pointer' }}
-          ></i>
-        </div>
+      <div
+        className=""
+        style={{
+          position: 'absolute',
+          backgroundColor: 'rgba(255,255,255,0.7)',
+          right: '0.2em',
+          top: '0.2em',
+          paddingLeft: '0.3em',
+          borderRadius: '0.2em'
+        }}
+      >
+        <i
+          onClick={() => onEditStart(ownTag, delight)}
+          className="edit icon"
+          style={{ cursor: 'pointer' }}
+        ></i>
+        <i
+          onClick={() => onSelect(delight)}
+          className={!hasTargetTag ? `plus icon` : ''}
+          style={{ cursor: 'pointer' }}
+        ></i>
+        <i
+          onClick={() => onUntag(delight)}
+          className={isRemovable ? `minus icon` : ``}
+          style={{ cursor: 'pointer' }}
+        ></i>
+        <i
+          onClick={() => onDelete(delight)}
+          className="trash icon"
+          style={{ cursor: 'pointer' }}
+        ></i>
+      </div>
 
+      <div className="content">
         <div className="header">{delight.name}</div>
         <div className="body-text">{delight.description}</div>
         <div className="smaller-text">

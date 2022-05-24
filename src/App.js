@@ -147,9 +147,11 @@ class App extends React.Component {
   };
 
   onDelete = (delight) => {
-    this.setState((prevState) => ({
-      poolDelights: prevState.poolDelights.filter((d) => d !== delight),
-    }));
+    if (window.confirm('Really delete this delight?')) {
+      this.setState((prevState) => ({
+        poolDelights: prevState.poolDelights.filter((d) => d !== delight),
+      }));
+    }
   };
 
   onTermChangeOne = (term) => {
