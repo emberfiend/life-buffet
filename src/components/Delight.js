@@ -12,6 +12,8 @@ const Delight = ({
 }) => {
   // delight: name, description, imageUrls[], tags[]
 
+  const tagsLabel = delight.tags.length > 0 ? 'Tags: ' : '';
+
   const renderedTags = delight.tags.map((tag) => {
     return <span key={tag}>{tag} </span>;
   });
@@ -28,16 +30,19 @@ const Delight = ({
 
   // TODO: optimize by skipping this if the delight is off-screen
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      // >= matters here, since the pointer may end up lost on the right as imageurls are deleted
-      if (currentImageIndex >= delight.imageUrls.length - 1) {
-        setCurrentImageIndex(0);
-      } else {
-        setCurrentImageIndex(currentImageIndex + 1);
-      }
-    }, 2500 + getRandomInt(10000));
+    // TODO: think through this conditional
+    if (delight.imageUrls.length > 1) {
+      const intervalId = setInterval(() => {
+        // >= matters here, since the pointer may end up lost on the right as imageurls are deleted
+        if (currentImageIndex >= delight.imageUrls.length - 1) {
+          setCurrentImageIndex(0);
+        } else {
+          setCurrentImageIndex(currentImageIndex + 1);
+        }
+      }, 2500 + getRandomInt(10000));
 
-    return () => clearInterval(intervalId);
+      return () => clearInterval(intervalId);
+    }
   }); // empty array omitted here - we want a re-run at every render
 
   /*const hasOwnTag = delight.tags.reduce((state, next) => {
@@ -84,7 +89,10 @@ const Delight = ({
 
         <div className="header">{delight.name}</div>
         <div className="body-text">{delight.description}</div>
-        <div className="smaller-text">Tags: {renderedTags}</div>
+        <div className="smaller-text">
+          {tagsLabel}
+          {renderedTags}
+        </div>
       </div>
     </div>
   );

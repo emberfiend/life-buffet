@@ -59,11 +59,13 @@ class App extends React.Component {
    * @return {Object} The freshly-made Delight.
    */
   makeFreshDelight(term) {
+    console.log('term is:');
+    console.log(term);
     return {
       name: '',
       description: '',
       imageUrls: [],
-      tags: [term == undefined ? '' : term],
+      tags: term == undefined || term == '' ? [] : [term],
     };
   }
 
@@ -205,7 +207,13 @@ class App extends React.Component {
           delight.tags.push(newTag);
         }
       }
-      const newTagArray = newTags.split(',');
+
+      // delete commas, delete 'Tags:', split on spaces, remove strings which are empty after trimming
+      newTags = newTags.replaceAll(',', '');
+      newTags = newTags.replaceAll('Tags:', '');
+      var newTagArray = newTags.split(' ');
+      newTagArray = newTagArray.filter((t) => t.trim().length > 0);
+
       newTagArray.forEach((tag) => addTagIfAbsent(delight, tag.trim()));
 
       delight.tags.sort((a, b) => {
