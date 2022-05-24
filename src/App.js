@@ -192,22 +192,31 @@ class App extends React.Component {
     }));
   };
 
-  onTagAdd = (tag) => {
+  onTagAdd = (newTags) => {
     console.log('onTagAdd');
 
-    function addTagIfAbsent(delight, tag) {
-      const tagExists = delight.tags.reduce((state, next) => {
-        return state || next === tag;
-      }, false);
+    function addTagsIfAbsent(delight, newTags) {
+      function addTagIfAbsent(delight, newTag) {
+        const tagExists = delight.tags.reduce((state, next) => {
+          return state || next === newTag;
+        }, false);
 
-      if (!tagExists) {
-        delight.tags.push(tag);
+        if (!tagExists) {
+          delight.tags.push(newTag);
+        }
       }
+      const newTagArray = newTags.split(',');
+      newTagArray.forEach((tag) => addTagIfAbsent(delight, tag.trim()));
+
+      delight.tags.sort((a, b) => {
+        return a.localeCompare(b);
+      });
+
       return delight;
     }
 
     this.setState((prevState) => ({
-      editModalTarget: addTagIfAbsent(prevState.editModalTarget, tag),
+      editModalTarget: addTagsIfAbsent(prevState.editModalTarget, newTags),
     }));
   };
 

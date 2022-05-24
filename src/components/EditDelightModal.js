@@ -21,14 +21,16 @@ const EditDelightModal = ({
 
   const [newImageUrl, setNewImageUrl] = useState('');
 
-  const onNewImageUrlChange = (imageUrl) => {
-    setNewImageUrl(imageUrl);
+  const onImageUrlAddHandler = () => {
+    onImageUrlAdd(newImageUrl);
+    setNewImageUrl('');
   };
 
   const [newTag, setNewTag] = useState('');
 
-  const onNewTagChange = (tag) => {
-    setNewTag(tag);
+  const onTagAddHandler = () => {
+    onTagAdd(newTag);
+    setNewTag('');
   };
 
   var renderedTags = editModalTarget.tags.map((t) => {
@@ -97,16 +99,13 @@ const EditDelightModal = ({
                   <input
                     type="text"
                     name="imageurls"
-                    placeholder="Add one or more image URLs. No hotlinking! Only files you or lifebuffet hosts."
-                    defaultValue={newImageUrl}
-                    onChange={(e) => onNewImageUrlChange(e.target.value)}
+                    placeholder="Add image URLs. No hotlinking! Only files you or lifebuffet hosts."
+                    value={newImageUrl}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
                   />
                 </div>
                 <div className="two wide">
-                  <div
-                    className="ui button"
-                    onClick={() => onImageUrlAdd(newImageUrl)}
-                  >
+                  <div className="ui button" onClick={onImageUrlAddHandler}>
                     Add
                   </div>
                 </div>
@@ -116,25 +115,25 @@ const EditDelightModal = ({
             <div className="field">
               <label>Tags</label>
               <div className="fields">
-                <div className="six wide field">
+                <div className="fourteen wide field">
                   <input
                     type="text"
                     name="tags"
-                    placeholder="Add tags for your delight. Tags help discoverability!"
-                    defaultValue={newTag}
-                    onChange={(e) => onNewTagChange(e.target.value)}
+                    placeholder="Add tags - they make it easier to find your delight! You, can, also, add, several, at, once."
+                    value={newTag}
+                    onChange={(e) => setNewTag(e.target.value)}
                   />
                 </div>
-                <div
-                  className="two wide ui button"
-                  onClick={() => onTagAdd(newTag)}
-                >
+                <div className="two wide ui button" onClick={onTagAddHandler}>
                   Add
                 </div>
-                <div class="eight wide ui mini horizontal divided list">
-                  {renderedTags}
-                </div>
               </div>
+            </div>
+            <div
+              class="ui mini horizontal divided list"
+              style={{ marginTop: '0' }}
+            >
+              {renderedTags}
             </div>
           </div>
         </form>

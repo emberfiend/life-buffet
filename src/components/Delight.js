@@ -29,11 +29,10 @@ const Delight = ({
   // TODO: optimize by skipping this if the delight is off-screen
   useEffect(() => {
     const intervalId = setInterval(() => {
-      //console.log('image update, currentIndex is ' + currentImageIndex);
-      if (currentImageIndex === delight.imageUrls.length - 1) {
+      // >= matters here, since the pointer may end up lost on the right as imageurls are deleted
+      if (currentImageIndex >= delight.imageUrls.length - 1) {
         setCurrentImageIndex(0);
       } else {
-        //console.log(`calling setCII with ${currentImageIndex + 1}`);
         setCurrentImageIndex(currentImageIndex + 1);
       }
     }, 2500 + getRandomInt(10000));
