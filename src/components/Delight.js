@@ -67,11 +67,11 @@ const Delight = ({
         className=""
         style={{
           position: 'absolute',
-          backgroundColor: 'rgba(255,255,255,0.7)',
+          backgroundColor: 'rgba(255,255,255,1.0)',
           right: '0.2em',
           top: '0.2em',
           paddingLeft: '0.3em',
-          borderRadius: '0.2em'
+          borderRadius: '0.2em',
         }}
       >
         <i
