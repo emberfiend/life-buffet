@@ -1,8 +1,171 @@
 [
   {
     "name": "Abseil",
-    "description": "",
+    "description": "Conquer wild heights in reverse. Get really good at checking ropes.",
     "imageUrls": ["https://lifebuffet.org/res/abseil by Simon on Pixabay.jpg"],
+    "tags": [
+      "a11y-fitness",
+      "a11y-whole-body",
+      "exercise-moderate",
+      "outdoors",
+      "risk-moderate",
+      "social"
+    ]
+  },
+  {
+    "name": "Bicycle",
+    "description": "Get a great cardio workout while you explore your world.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/cycling-6895 by Hans Braxmeier on Pixabay.jpg",
+      "https://lifebuffet.org/res/abseil by Simon on Pixabay.jpg"
+    ],
+    "tags": [
+      "a11y-fitness",
+      "a11y-whole-body",
+      "exercise-moderate",
+      "outdoors",
+      "risk-moderate",
+      "social",
+      "solo",
+      "to-taste"
+    ]
+  },
+  {
+    "name": "Crochet",
+    "description": "Create lovely chunky fabric art. ",
+    "imageUrls": [
+      "https://lifebuffet.org/res/crochet-hands.jpg",
+      "https://lifebuffet.org/res/crochet-lamb.jpg"
+    ],
+    "tags": [
+      "a11y-hand-dexterity",
+      "exercise-none",
+      "indoors",
+      "risk-none",
+      "solo",
+      "to-taste"
+    ]
+  },
+  {
+    "name": "Embroider",
+    "description": "Create delicate works of art in breathing fabric.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/embroider flowers.jpg",
+      "https://lifebuffet.org/res/abseil by Simon on Pixabay.jpg"
+    ],
+    "tags": [
+      "a11y-hand-dexterity",
+      "exercise-none",
+      "indoors",
+      "risk-none",
+      "solo"
+    ]
+  },
+  {
+    "name": "Football / Soccer",
+    "description": "Kick balls into nets, and have fun doing it",
+    "imageUrls": [
+      "https://lifebuffet.org/res/soccer-7056003 by Dimitris Vetsikas on Pixabay.jpg",
+      "https://lifebuffet.org/res/abseil by Simon on Pixabay.jpg"
+    ],
+    "tags": ["exercise-moderate", "outdoors", "risk-minor", "skill", "social"]
+  },
+  {
+    "name": "Geocache",
+    "description": "Hunt for treasures others have hidden.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/geocache by Settergren on Pixabay.jpg"
+    ],
     "tags": []
+  },
+  {
+    "name": "Hike",
+    "description": "Explore the wild spaces of your world, alone or with friends.",
+    "imageUrls": ["https://lifebuffet.org/res/hike by Pexeels on Pixabay.jpg"],
+    "tags": ["to-taste", "exercise-moderate"]
+  },
+  {
+    "name": "Ice skate",
+    "description": "Glide over ice and feel like you're flying.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/skates-4199003 by Manfred Richter on Pixabay.jpg"
+    ],
+    "tags": []
+  },
+  {
+    "name": "Knit",
+    "description": "Make lovely chunky garments and such.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/knitting-1430153 by Mabel Amber on Pixabay.jpg"
+    ],
+    "tags": ["indoors"]
+  },
+  {
+    "name": "Quilt",
+    "description": "Join three or more layers of fabric together to create a three-dimensional padded surface.",
+    "imageUrls": ["https://lifebuffet.org/res/quilting.jpg"],
+    "tags": ["indoors", "to-taste"]
+  },
+  {
+    "name": "Sew",
+    "description": "Bend garments to your will. Learn about the magic of correctly-fitting clothes.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/sewing-1369658 jacqueline macou on Pixabay.jpg"
+    ],
+    "tags": []
+  },
+  {
+    "name": "Skateboard",
+    "description": "Ride your sweet chrome into the sunset!",
+    "imageUrls": [
+      "https://lifebuffet.org/res/skateboard-6518594 on Pixabay.jpg"
+    ],
+    "tags": ["outdoors", "skill", "social", "solo", "risk-moderate"]
+  },
+  {
+    "name": "Spelunk",
+    "description": "Venture into the deep places of the world.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/spelunk by Colin Behrens on Pixabay.jpg"
+    ],
+    "tags": ["aka-cave", "aka-caving"]
+  },
+  {
+    "name": "Surf",
+    "description": "Ride the wave, maaan!",
+    "imageUrls": [
+      "https://lifebuffet.org/res/surfer-3729052 by analogicus on Pixabay.jpg"
+    ],
+    "tags": []
+  },
+  {
+    "name": "Table tennis",
+    "description": "Test your reaction time and dexterity in an intense head-to-head battle.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/table-tennis-4040584 by HeungSoon on Pixabay.jpg"
+    ],
+    "tags": ["aka-ping-pong", "to-taste", "indoors"]
+  },
+  {
+    "name": "Tennis",
+    "description": "Hit balls back and forth across a large court.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/tennis-3554019 by marijana1 on Pixabay.jpg"
+    ],
+    "tags": []
+  },
+  {
+    "name": "Volleyball",
+    "description": "I don't like sand. It's coarse and rough and irritating and it gets everywhere.",
+    "imageUrls": [
+      "https://lifebuffet.org/res/volleyball-1628644 by Andreas Lischka on Pixabay.jpg"
+    ],
+    "tags": []
+  },
+  {
+    "name": "Weave",
+    "description": "Create cloth itself with your very own fingertips. And perhaps a loom.",
+    "imageUrls": ["https://lifebuffet.org/res/weaving.jpg"],
+    "tags": ["indoors"]
   }
 ]
