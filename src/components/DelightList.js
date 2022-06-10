@@ -65,6 +65,7 @@ const DelightList = ({
             <input
               type="text"
               value={term}
+              placeholder="Search for one or more terms. Use 'not' to exclude terms. Eg: 'creative, not risky, can-be-solo'"
               onChange={(e) => onTermChange(e.target.value)}
             />
           </div>
