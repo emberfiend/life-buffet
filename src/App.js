@@ -289,7 +289,7 @@ class App extends React.Component {
       console.log(`Editing existing delight at index ${targetDelightIndex}`);
 
       this.setState({
-        // need to edit a copy to allow cancelling - spread { ...delight } was almost good enough, but it was retaining references to the old tag and imageUrl arrays
+        // need to edit a copy to allow cancelling - spread { ...delight } was almost good enough, but it was retaining references to the old tag and imageUrl arrays. this copy is deep
         editModalTarget: structuredClone(delight),
         editModalIndex: targetDelightIndex,
       });

@@ -19,21 +19,44 @@ const DelightList = ({
   console.log('term is ' + term);
 
   useEffect(() => {
-    setFilteredDelights(
-      delights.filter((d) => {
-        const lowerTerm = term.toLowerCase();
-        if (
-          d.name.toLowerCase().includes(lowerTerm) ||
-          d.description.toLowerCase().includes(lowerTerm)
+    let newDelights = delights; // structuredClone(delights);
+    let terms = term.toLowerCase().split(',');
+
+    for (var i = 0; i < terms.length; i++) {
+      newDelights = newDelights.filter((d) => {
+        let thisTerm = terms[i].trim();
+        let negated = false;
+
+        if (thisTerm.length > 1 && thisTerm[0] == '!') {
+          negated = true;
+          thisTerm = thisTerm.substring(1, thisTerm.length);
+        } else if (
+          thisTerm.length > 4 &&
+          thisTerm.substring(0, 4).toLowerCase() == 'not '
         ) {
-          return true;
-        } else {
-          return d.tags.reduce((state, next) => {
-            return state || next.includes(lowerTerm);
-          }, false);
+          negated = true;
+          thisTerm = thisTerm.substring(4, thisTerm.length);
         }
-      })
-    );
+
+        function checkPresence(searchTerm) {
+          if (
+            d.name.toLowerCase().includes(searchTerm) ||
+            d.description.toLowerCase().includes(searchTerm)
+          ) {
+            return true;
+          } else {
+            return d.tags.reduce((state, next) => {
+              return state || next.includes(searchTerm);
+            }, false);
+          }
+        }
+
+        let result = checkPresence(thisTerm);
+        return negated ? !result : result;
+      });
+    }
+
+    setFilteredDelights(newDelights);
   }, [term, delights]); // needs to watch delights too, to refilter when it changes
 
   const onUntagHelper = (delight) => {
